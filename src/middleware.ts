@@ -1,4 +1,4 @@
-import type { ZObject, Bundle, Authentication } from 'zapier-platform-core';
+import type { Bundle, ZObject } from "zapier-platform-core";
 
 // This function runs after every outbound request. You can use it to check for
 // errors or modify the response. You can have as many as you need. They'll need
@@ -7,9 +7,9 @@ const handleBadResponses = (response, z: ZObject, bundle: Bundle) => {
   if (response.status === 401) {
     throw new z.errors.Error(
       // This message is surfaced to the user
-      'The API Key you supplied is incorrect',
-      'AuthenticationError',
-      response.status,
+      "The API Key you supplied is incorrect",
+      "AuthenticationError",
+      response.status
     );
   }
 
@@ -21,6 +21,7 @@ const handleBadResponses = (response, z: ZObject, bundle: Bundle) => {
 const includeApiKey = (request, z: ZObject, bundle: Bundle) => {
   if (bundle.authData.apiKey) {
     // If you want to include the API key in the header instead, uncomment this:
+    // request.headers.Authorization = bundle.authData.apiKey;
     request.headers.Authorization = "Bearer " + bundle.authData.apiKey;
   }
 
