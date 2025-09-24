@@ -8,13 +8,15 @@
     "clean": "rm -rf ./dist ./build",
     "build": "npm run clean && tsc",
     "test": "npm run build && vitest --run",
-    "push": "npm run build && zapier push"
+    "push": "npm run build && zapier push",
+    "push:dev": "npm run build && zapier push --omit=dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.2.2",
     "zapier-platform-core": "17.7.0"
   },
   "devDependencies": {

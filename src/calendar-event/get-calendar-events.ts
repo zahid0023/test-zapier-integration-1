@@ -7,25 +7,43 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
+  { key: "calendarId", label: "Calendar ID", type: "string" },
+  { key: "groupId", label: "Group ID", type: "string" },
+  { key: "userId", label: "User ID", type: "string" },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "timezone", label: "Timezone", type: "string", required: true },
+  { key: "startDate", label: "Start Date", type: "string", required: true },
+  { key: "startTime", label: "Start Time", type: "string", required: true },
+  { key: "endDate", label: "End Date", type: "string", required: true },
+  { key: "endTime", label: "End Time", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
+  const {
+    calendarId = "",
+    groupId = "",
+    userId = "",
+    locationId = "",
+    timezone = "",
+    startDate = "",
+    startTime = "",
+    endDate = "",
+    endTime = "",
+  } = bundle.inputData;
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    url: `${ENV.API_URL}/calendars/events/events?calendar-id?calendar-id=${calendarId}&group-id=${groupId}&user-id=${userId}&location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.task];
+  return [response.data.events];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "task",
-  noun: "Task",
+export const getCalendarEvents = defineSearch({
+  key: "getCalendarEvents",
+  noun: "Calendar Event",
 
   display: {
-    label: "Get Task",
-    description: "Get a Task by ID",
+    label: "Get All Calendar Events",
+    description: "Get all calendar events",
   },
 
   operation: {
@@ -38,10 +56,10 @@ export default defineSearch({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      id: 1,
-      name: "Test",
-    },
+    // sample: {
+    //   id: 1,
+    //   name: "Test",
+    // },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

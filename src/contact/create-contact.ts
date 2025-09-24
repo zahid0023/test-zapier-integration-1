@@ -1,19 +1,19 @@
 import {
-  defineCreate,
   defineInputFields,
+  defineCreate,
   type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
-import { DND_STATUS_ENUM, GENDER_ENUM, INBOUND_DND_STATUS_ENUM } from "../enums/contact.enum.js";
 import { COUNTRY_ENUM } from "../enums/country.enum.js";
+import { DND_STATUS_ENUM, GENDER_ENUM, INBOUND_DND_STATUS_ENUM } from "../enums/contact.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
   { key: "first_name", label: "First Name", type: "string", required: false },
   { key: "last_name", label: "Last Name", type: "string", required: false },
   { key: "name", label: "Full Name", type: "string", required: false },
   { key: "email", label: "Email", type: "string", required: false },
+  { key: "location_id", label: "Location ID", type: "string", required: true },
   { key: "gender", label: "Gender", type: "string", choices: GENDER_ENUM },
   { key: "phone", label: "Phone", type: "string", required: false },
   { key: "address1", label: "Address Line 1", type: "string" },
@@ -112,31 +112,108 @@ const inputFields = defineInputFields([
       { key: "field_value", label: "Field Value", type: "string" },
     ],
   },
+  // {
+  //   key: "custom_fields.id",
+  //   label: "Custom Field ID",
+  //   type: "string",
+  // },
+  // {
+  //   key: "custom_fields.key",
+  //   label: "Custom Field Key",
+  //   type: "string",
+  // },
+  // {
+  //   key: "custom_fields.field_value",
+  //   label: "Custom Field Value",
+  //   type: "string",
+  // },
   { key: "source", label: "Source", type: "string" },
   { key: "country", label: "Country", type: "string", choices: COUNTRY_ENUM },
   { key: "company_name", label: "Company Name", type: "string" },
   { key: "assigned_to", label: "Assigned To", type: "string" },
 ]);
 
+export const sampleInputData = {
+  first_name: "John",
+  last_name: "Doe",
+  email: "john.doe@example.com",
+  location_id: "IxfSlEIQQeiOYQlVEApa",
+  gender: "male",
+  phone: "555-555-5555",
+  address1: "123 Main St",
+  city: "Anytown",
+  state: "CA",
+  postal_code: "12345",
+  website: "https://example.com",
+  timezone: "America/Los_Angeles",
+  dnd: false,
+  dnd_settings: {
+    call: {
+      status: "active",
+      message: "I'm busy right now",
+      code: "BUSY",
+    },
+    email: {
+      status: "inactive",
+      message: "No email notifications",
+      code: "NO_EMAIL",
+    },
+    sms: {
+      status: "inactive",
+      message: "No SMS notifications",
+      code: "NO_SMS",
+    },
+    whats_app: {
+      status: "inactive",
+      message: "No WhatsApp notifications",
+      code: "NO_WHATSAPP",
+    },
+    gmb: {
+      status: "inactive",
+      message: "No GMB notifications",
+      code: "NO_GMB",
+    },
+    fb: {
+      status: "inactive",
+      message: "No Facebook notifications",
+      code: "NO_FB",
+    },
+  },
+  inbound_dnd_settings: {
+    all: {
+      status: "inactive",
+      message: "No inbound DND",
+    },
+  },
+  tags: ["customer", "lead"],
+  custom_fields: [
+    { id: "1", key: "favorite_color", field_value: "blue" },
+    { id: "2", key: "hobby", field_value: "guitar" },
+  ],
+  source: "web",
+  country: "USA",
+  company_name: "Example Inc.",
+  assigned_to: "user_123",
+};
+
 // create a particular contact by name
 const perform = (async (z, bundle) => {
-  const { contactId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "PUT",
-    url: `${ENV.API_URL}/contacts/${contactId}`,
-    body,
+    method: "POST",
+    url: `${ENV.API_URL}/contacts`,
+    body: bundle.inputData,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "updateContact",
-  noun: "Update Contact",
+export const createContact = defineCreate({
+  key: "createContact",
+  noun: "Contact",
 
   display: {
-    label: "Update Contact",
-    description: "Updates an existing contact.",
+    label: "Create Contact",
+    description: "Creates a new contact, probably with input from previous steps.",
   },
 
   operation: {
@@ -151,8 +228,8 @@ export default defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
+      location_id: ENV.LOCATION_ID,
+      email: `user${Math.floor(Math.random() * 10000)}@example.com`,
     },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

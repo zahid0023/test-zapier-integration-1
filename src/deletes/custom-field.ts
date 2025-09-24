@@ -7,25 +7,24 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "noteId", required: true, type: "string", label: "Note ID" },
+  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
     method: "DELETE",
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/notes/${bundle.inputData.noteId}`,
+    url: `${ENV.API_URL}/custom-fields/${bundle.inputData.customFieldId}`,
   });
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
 export default defineCreate({
-  key: "deleteNote",
-  noun: "Delete Note",
+  key: "deleteCustomField",
+  noun: "Delete Custom Field",
 
   display: {
-    label: "Delete Note",
-    description: "Delete a Note by ID",
+    label: "Delete Custom Field",
+    description: "Delete a Custom Field by ID",
   },
 
   operation: {

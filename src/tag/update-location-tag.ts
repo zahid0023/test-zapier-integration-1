@@ -1,38 +1,39 @@
 import {
   defineInputFields,
-  defineSearch,
-  type SearchPerform,
+  defineCreate,
+  type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "tagId", label: "Tag ID", type: "string", required: true },
+  { key: "name", label: "Tag Name", type: "string", required: false },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { locationId, tagId, ...body } = bundle.inputData;
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    method: "PUT",
+    url: `${ENV.API_URL}/locations/${locationId}/tags/${tagId}`,
+    body,
   });
-  // this should return an array of objects (but only the first will be used)
-  return [response.data.task];
-}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
+  // this should return a single object
+  return response.data;
+}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "task",
-  noun: "Task",
+export const updateLocationTag = defineCreate({
+  key: "updateLocationTag",
+  noun: "Location Tag",
 
   display: {
-    label: "Get Task",
-    description: "Get a Task by ID",
+    label: "Update Location Tag",
+    description: "Updates an existing location tag",
   },
 
   operation: {
     perform,
-
-    // `inputFields` defines the fields a user could provide
-    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -49,7 +50,8 @@ export default defineSearch({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // { key: "id", label: "Contact ID" },
+      // {key: 'id', label: 'Person ID'},
+      // {key: 'name', label: 'Person Name'}
     ],
   },
 });

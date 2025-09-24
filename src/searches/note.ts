@@ -16,7 +16,7 @@ const perform = (async (z, bundle) => {
     url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/notes/${bundle.inputData.noteId}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.contact];
+  return [response.data.note];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
 export default defineSearch({

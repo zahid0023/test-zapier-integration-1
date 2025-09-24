@@ -8,24 +8,23 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.task];
+  return [response.data.tasks];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "task",
+export const getTasks = defineSearch({
+  key: "getTasks",
   noun: "Task",
 
   display: {
     label: "Get Task",
-    description: "Get a Task by ID",
+    description: "Get all task for a contact",
   },
 
   operation: {
@@ -38,10 +37,10 @@ export default defineSearch({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      id: 1,
-      name: "Test",
-    },
+    // sample: {
+    //   id: 1,
+    //   name: "Test",
+    // },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

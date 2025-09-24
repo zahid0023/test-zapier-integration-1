@@ -7,25 +7,28 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "id", required: true, type: "string", label: "Contact ID" },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "email", label: "Email", type: "string" },
+  { key: "number", label: "Number", type: "string" },
 ]);
 
-// find a particular contact by name
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.id}`,
+    url: `${ENV.API_URL}/contacts/search/duplicate?location-id=${
+      bundle.inputData.locationId
+    }&email=${bundle.inputData.email || ""}&number=${bundle.inputData.number || ""}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.contact];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "contact",
-  noun: "Contact",
+export const getDuplicateContact = defineSearch({
+  key: "getDuplicateContact",
+  noun: "Duplicate Contact",
 
   display: {
-    label: "Get Contact",
-    description: "Get a Contact by ID",
+    label: "Get Duplicate Contact",
+    description: "Get a Duplicate Contact",
   },
 
   operation: {
@@ -49,7 +52,7 @@ export default defineSearch({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      { key: "id", label: "Contact ID" },
+      // { key: "id", label: "Contact ID" },
     ],
   },
 });

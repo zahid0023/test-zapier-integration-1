@@ -7,25 +7,25 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "tagId", label: "Tag ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    url: `${ENV.API_URL}/tags/${bundle.inputData.tagId}?location-id=${bundle.inputData.locationId}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.task];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "task",
-  noun: "Task",
+export const searchLocationTag = defineSearch({
+  key: "locationTag",
+  noun: "Location Tag",
 
   display: {
-    label: "Get Task",
-    description: "Get a Task by ID",
+    label: "Get Location Tag",
+    description: "Get a Location Tag by ID",
   },
 
   operation: {

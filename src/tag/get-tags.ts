@@ -7,25 +7,24 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    url: `${ENV.API_URL}/locations/${bundle.inputData.locationId}/tags`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.task];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "task",
-  noun: "Task",
+export const getSubAccountTags = defineSearch({
+  key: "getSubAccountTags",
+  noun: "Tags (Sub-Account)",
 
   display: {
-    label: "Get Task",
-    description: "Get a Task by ID",
+    label: "Get Sub-Account Tags",
+    description: "Get all tags for a sub-account",
   },
 
   operation: {
@@ -38,10 +37,10 @@ export default defineSearch({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      id: 1,
-      name: "Test",
-    },
+    // sample: {
+    //   id: 1,
+    //   name: "Test",
+    // },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

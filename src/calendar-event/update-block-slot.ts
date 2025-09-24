@@ -7,32 +7,40 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "taskId", required: true, type: "string", label: "Task ID" },
+  { key: "eventId", label: "Event ID", type: "string", required: true },
+  { key: "title", label: "Title", type: "string", required: true },
+  { key: "calendar_id", label: "Calendar ID", type: "string", required: true },
+  { key: "assigned_user_id", label: "Assigned User ID", type: "string", required: true },
+  { key: "location_id", label: "Location ID", type: "string", required: true },
+  { key: "time_zone", label: "Time Zone", type: "string", required: true },
+  { key: "start_date", label: "Start Date", type: "string", required: true },
+  { key: "start_time", label: "Start Time", type: "string", required: true },
+  { key: "end_date", label: "End Date", type: "string", required: true },
+  { key: "end_time", label: "End Time", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { eventId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "DELETE",
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    method: "PUT",
+    url: `${ENV.API_URL}/calendars/events/block-slots/${eventId}`,
+    body,
   });
+  // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "deleteTask",
-  noun: "Delete Task",
+export const updateCalendarBlockSlot = defineCreate({
+  key: "updateCalendarBlockSlot",
+  noun: "Calendar Event Block Slot",
 
   display: {
-    label: "Delete Task",
-    description: "Delete a Task by ID",
+    label: "Update Calendar Block Slot",
+    description: "Updates an existing calendar block slot",
   },
 
   operation: {
     perform,
-
-    // `inputFields` defines the fields a user could provide
-    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -49,8 +57,8 @@ export default defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // { key: "id", label: "Contact ID" },
-      // { key: "name", label: "Contact Name" },
+      // {key: 'id', label: 'Person ID'},
+      // {key: 'name', label: 'Person Name'}
     ],
   },
 });

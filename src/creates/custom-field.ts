@@ -7,32 +7,45 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "taskId", required: true, type: "string", label: "Task ID" },
+  { key: "name", label: "Name", type: "string", required: true },
+  { key: "data_type", label: "Data Type", type: "string", required: true },
+  { key: "placeholder", label: "Placeholder", type: "string" },
+  { key: "accepted_format", label: "Accepted Format", type: "string", list: true },
+  { key: "is_multiple_file", label: "Is Multiple File", type: "boolean" },
+  { key: "max_number_of_files", label: "Max Number Of Files", type: "integer" },
+  {
+    key: "text_box_list_options",
+    label: "Text Box List Options",
+    children: [
+      { key: "label", label: "Label", type: "string" },
+      { key: "prefill_value", label: "Prefill Value", type: "string" },
+    ],
+  },
+  { key: "position", label: "Position", type: "integer" },
+  { key: "model", label: "Model", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    method: "DELETE",
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    method: "POST",
+    url: `${ENV.API_URL}/custom-fields`,
+    body: bundle.inputData,
   });
+  // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
 export default defineCreate({
-  key: "deleteTask",
-  noun: "Delete Task",
+  key: "createCustomField",
+  noun: "Create Custom Field",
 
   display: {
-    label: "Delete Task",
-    description: "Delete a Task by ID",
+    label: "Create Custom Field",
+    description: "Creates a new custom field",
   },
 
   operation: {
     perform,
-
-    // `inputFields` defines the fields a user could provide
-    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -49,8 +62,8 @@ export default defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // { key: "id", label: "Contact ID" },
-      // { key: "name", label: "Contact Name" },
+      // {key: 'id', label: 'Person ID'},
+      // {key: 'name', label: 'Person Name'}
     ],
   },
 });
