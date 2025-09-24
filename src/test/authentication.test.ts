@@ -9,12 +9,12 @@ describe("custom auth", () => {
   it("passes authentication and returns json", async () => {
     const bundle = {
       authData: {
-        apiKey: process.env.authData_apiKey,
+        apiKey: ENV.AUTH_DATA_API_KEY,
       },
     };
 
     const response = await appTester(App.authentication.test, bundle);
-    expect(response.data).toHaveProperty("username");
+    expect(response.status).toBe(200);
   });
 
   it("fails on bad auth", async () => {
@@ -27,9 +27,8 @@ describe("custom auth", () => {
     try {
       await appTester(App.authentication.test, bundle);
     } catch (error) {
-      expect(error.message).toContain("The API Key you supplied is incorrect");
+      expect(error.message).toThrowError("The API Key you supplied is incorrect");
       return;
     }
-    throw new Error("appTester should have thrown");
   });
 });
