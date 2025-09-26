@@ -7,24 +7,24 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
+  { key: "contactId", label: "Contact ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/custom-fields/${bundle.inputData.customFieldId}`,
+    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/appointments`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.customField];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "customField",
-  noun: "Custom Field",
+export const getAppointments = defineSearch({
+  key: "getAppointments",
+  noun: "Appointment",
 
   display: {
-    label: "Get Custom Field",
-    description: "Get a Custom Field by ID",
+    label: "Get Appointments",
+    description: "Get all Appointments for a Contact",
   },
 
   operation: {
@@ -38,9 +38,8 @@ export default defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      contactId: "ODUO6yJQiACv40RCkSmq",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

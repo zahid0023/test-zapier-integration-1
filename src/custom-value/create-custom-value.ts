@@ -7,15 +7,17 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
+  { key: "locationId", label: "Location ID", type: "string", required: true },
   { key: "name", label: "Name", type: "string", required: true },
   { key: "value", label: "Value", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { locationId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/custom-values`,
-    body: bundle.inputData,
+    url: `${ENV.API_URL}/custom-values?location-id=${locationId}`,
+    body,
   });
   // this should return a single object
   return response.data;
@@ -23,7 +25,7 @@ const perform = (async (z, bundle) => {
 
 export const createCustomValue = defineCreate({
   key: "createCustomValue",
-  noun: "Create Custom Value",
+  noun: "Custom Value",
 
   display: {
     label: "Create Custom Value",
@@ -38,9 +40,10 @@ export const createCustomValue = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      locationId: ENV.LOCATION_ID,
+      name: "Custom Value 1",
+      value: "Value 1",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

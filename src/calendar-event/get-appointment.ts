@@ -18,8 +18,8 @@ const perform = (async (z, bundle) => {
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getAppointment = defineSearch({
-  key: "getAppointment",
+export const getAppointmentEvent = defineSearch({
+  key: "getAppointmentEvent",
   noun: "Appointment",
 
   display: {

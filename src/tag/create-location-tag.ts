@@ -24,7 +24,7 @@ const perform = (async (z, bundle) => {
 
 export const createLocationTag = defineCreate({
   key: "createLocationTag",
-  noun: "Location Tag",
+  noun: "Tag (Location)",
 
   display: {
     label: "Create Location Tag",
@@ -39,9 +39,9 @@ export const createLocationTag = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      locationId: ENV.LOCATION_ID,
+      name: "Test Location Tag 1",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

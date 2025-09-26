@@ -7,35 +7,30 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "tagId", label: "Tag ID", type: "string", required: true },
+  { key: "contactId", required: true, type: "string", label: "Contact ID" },
+  { key: "noteId", required: true, type: "string", label: "Note ID" },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
     method: "DELETE",
-    url: `${ENV.API_URL}/locations/${bundle.inputData.locationId}/tags/${bundle.inputData.tagId}`,
+    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/notes/${bundle.inputData.noteId}`,
   });
-  // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const deleteLocationTag = defineCreate({
-  key: "deleteLocationTag",
-  noun: "Tag (Location)",
+export const deleteNote = defineCreate({
+  key: "deleteNote",
+  noun: "Note",
 
   display: {
-    label: "Delete Location Tag",
-    description: "Deletes an existing location tag",
+    label: "Delete Note",
+    description: "Delete a Note by ID",
   },
 
   operation: {
     perform,
     inputFields,
-
-    // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
-    // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
-    // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
       id: 1,
       name: "Test",
@@ -47,8 +42,8 @@ export const deleteLocationTag = defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // {key: 'id', label: 'Person ID'},
-      // {key: 'name', label: 'Person Name'}
+      // { key: "id", label: "Contact ID" },
+      // { key: "name", label: "Contact Name" },
     ],
   },
 });

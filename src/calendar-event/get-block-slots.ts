@@ -56,10 +56,14 @@ export const getBlockSlots = defineSearch({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    // sample: {
-    //   id: 1,
-    //   name: "Test",
-    // },
+    sample: {
+      locationId: ENV.LOCATION_ID,
+      timezone: "America/New_York",
+      startDate: "2024-10-01",
+      startTime: "08:00",
+      endDate: "2024-10-31",
+      endTime: "18:00",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

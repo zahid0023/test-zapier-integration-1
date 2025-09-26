@@ -24,7 +24,7 @@ const perform = (async (z, bundle) => {
 
 export const createContactTag = defineCreate({
   key: "createContactTag",
-  noun: "Contact Tag",
+  noun: "Tag (Contact)",
 
   display: {
     label: "Create Contact Tag",
@@ -39,8 +39,8 @@ export const createContactTag = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
+      contactId: "ODUO6yJQiACv40RCkSmq",
+      tags: ["Test Tag1", "Test Tag2"],
     },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

@@ -24,7 +24,7 @@ const perform = (async (z, bundle) => {
 
 export const deleteContactTag = defineCreate({
   key: "deleteContactTag",
-  noun: "Contact Tag",
+  noun: "Tag (Contact)",
 
   display: {
     label: "Delete Contact Tag",

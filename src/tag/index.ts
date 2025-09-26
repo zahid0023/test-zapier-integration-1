@@ -1,6 +1,6 @@
 export * from "./create-location-tag.js";
 export * from "./delete-location-tag.js";
-export * from "./search-tag.js";
+export * from "./get-location-tag.js";
 export * from "./update-location-tag.js";
 
 // Contact Tags

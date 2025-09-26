@@ -8,29 +8,30 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "noteId", label: "Note ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string", required: true },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "workflowId", label: "Workflow ID", type: "string", required: true },
+  { key: "dateTime", label: "Date Time", type: "string" },
+  { key: "time", label: "Time", type: "string" },
+  { key: "time_zone", label: "Timezone", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, noteId, ...payload } = bundle.inputData;
+  const { contactId, workflowId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "PUT",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    method: "DELETE",
+    url: `${ENV.API_URL}/contacts/${contactId}/workflow/${workflowId}`,
+    body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "updateNote",
-  noun: "Update Note",
+export const deleteContactWorkflow = defineCreate({
+  key: "deleteContactWorkflow",
+  noun: "Workflow (Contact)",
 
   display: {
-    label: "Update Note",
-    description: "Updates an existing note",
+    label: "Delete Contact from Workflow",
+    description: "Removes a contact from an existing workflow",
   },
 
   operation: {
@@ -41,9 +42,9 @@ export default defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      contactId: ENV.CONTACT_ID,
+      workflowId: "sx6wyHhbFdRXh302LLNR",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

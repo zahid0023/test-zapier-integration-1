@@ -7,41 +7,47 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "taskId", required: true, type: "string", label: "Task ID" },
+  { key: "contactId", label: "Contact ID", type: "string", required: true },
+  { key: "workflowId", label: "Workflow ID", type: "string", required: true },
+  { key: "dateTime", label: "Date Time", type: "string" },
+  { key: "time", label: "Time", type: "string" },
+  { key: "time_zone", label: "Timezone", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { contactId, workflowId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "DELETE",
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
+    method: "POST",
+    url: `${ENV.API_URL}/contacts/${contactId}/workflow/${workflowId}`,
+    body,
   });
+  // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "deleteTask",
-  noun: "Delete Task",
+export const addContactWorkflow = defineCreate({
+  key: "addContactWorkflow",
+  noun: "Workflow (Contact)",
 
   display: {
-    label: "Delete Task",
-    description: "Delete a Task by ID",
+    label: "Add Contact to Workflow",
+    description: "Adds a contact to an existing workflow",
   },
 
   operation: {
     perform,
-
-    // `inputFields` defines the fields a user could provide
-    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      contactId: ENV.CONTACT_ID,
+      workflowId: "sx6wyHhbFdRXh302LLNR",
+      dateTime: "2024-12-31",
+      time: "15:30",
+      time_zone: "America/New_York",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see
@@ -49,8 +55,8 @@ export default defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // { key: "id", label: "Contact ID" },
-      // { key: "name", label: "Contact Name" },
+      // {key: 'id', label: 'Person ID'},
+      // {key: 'name', label: 'Person Name'}
     ],
   },
 });

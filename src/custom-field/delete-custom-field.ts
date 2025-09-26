@@ -7,20 +7,21 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
+  { key: "locationId", label: "Location ID", type: "string", required: true },
   { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
     method: "DELETE",
-    url: `${ENV.API_URL}/custom-fields/${bundle.inputData.customFieldId}`,
+    url: `${ENV.API_URL}/custom-fields/${bundle.inputData.customFieldId}?location-id=${bundle.inputData.locationId}`,
   });
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
+export const deleteCustomField = defineCreate({
   key: "deleteCustomField",
-  noun: "Delete Custom Field",
+  noun: "Custom Field",
 
   display: {
     label: "Delete Custom Field",

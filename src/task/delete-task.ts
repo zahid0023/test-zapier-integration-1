@@ -1,31 +1,31 @@
 import {
   defineInputFields,
-  defineSearch,
-  type SearchPerform,
+  defineCreate,
+  type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "noteId", label: "Note ID", type: "string", required: true },
+  { key: "contactId", required: true, type: "string", label: "Contact ID" },
+  { key: "taskId", required: true, type: "string", label: "Task ID" },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/notes/${bundle.inputData.noteId}`,
+    method: "DELETE",
+    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/tasks/${bundle.inputData.taskId}`,
   });
-  // this should return an array of objects (but only the first will be used)
-  return [response.data.note];
-}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
+  return response.data;
+}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineSearch({
-  key: "note",
-  noun: "Note",
+export const deleteTask = defineCreate({
+  key: "deleteTask",
+  noun: "Task",
 
   display: {
-    label: "Get Note",
-    description: "Get a Note by ID",
+    label: "Delete Task",
+    description: "Delete a Task by ID",
   },
 
   operation: {
@@ -50,6 +50,7 @@ export default defineSearch({
     outputFields: [
       // these are placeholders to match the example `perform` above
       // { key: "id", label: "Contact ID" },
+      // { key: "name", label: "Contact Name" },
     ],
   },
 });

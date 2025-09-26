@@ -1,41 +1,40 @@
 import {
   defineInputFields,
-  defineCreate,
-  type CreatePerform,
+  defineSearch,
+  type SearchPerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "workflowId", label: "Workflow ID", type: "string", required: true },
-  { key: "dateTime", label: "Date Time", type: "string", required: true },
-  { key: "time", label: "Time", type: "string", required: true },
-  { key: "time_zone", label: "Timezone", type: "string", required: true },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "groupId", label: "Group ID", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, workflowId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/workflow/${workflowId}`,
-    body,
+    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}&group-id=${
+      bundle.inputData.groupId || ""
+    }`,
   });
-  // this should return a single object
-  return response.data;
-}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
+  // this should return an array of objects (but only the first will be used)
+  return [response.data.customField];
+}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const createWorkflow = defineCreate({
-  key: "addContactToWorkflow",
-  noun: "Add Contact to Workflow",
+export const getCalendars = defineSearch({
+  key: "getCalendars",
+  noun: "Calendar",
 
   display: {
-    label: "Add Contact to Workflow",
-    description: "Adds a contact to an existing workflow",
+    label: "Get Calendars",
+    description: "Get all Calendars",
   },
 
   operation: {
     perform,
+
+    // `inputFields` defines the fields a user could provide
+    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -52,8 +51,7 @@ export const createWorkflow = defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // {key: 'id', label: 'Person ID'},
-      // {key: 'name', label: 'Person Name'}
+      // { key: "id", label: "Contact ID" },
     ],
   },
 });

@@ -7,29 +7,35 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "tagId", label: "Tag ID", type: "string", required: true },
-  { key: "name", label: "Tag Name", type: "string", required: false },
+  { key: "contactId", label: "Contact ID", type: "string", required: true },
+  { key: "taskId", label: "Task ID", type: "string", required: true },
+  { key: "title", label: "Title", type: "string", required: true },
+  { key: "body", label: "Body", type: "string", required: false },
+  { key: "due_date", label: "Due Date", type: "string", required: false },
+  { key: "due_time", label: "Due Time", type: "string", required: false },
+  { key: "completed", label: "Completed", type: "boolean", required: false },
+  { key: "assigned_to", label: "Assigned To", type: "string", required: false },
 ]);
 
+// create a particular contact by name
 const perform = (async (z, bundle) => {
-  const { locationId, tagId, ...body } = bundle.inputData;
+  const { contactId, taskId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "PUT",
-    url: `${ENV.API_URL}/locations/${locationId}/tags/${tagId}`,
+    url: `${ENV.API_URL}/contacts/${contactId}/tasks/${taskId}`,
     body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const updateLocationTag = defineCreate({
-  key: "updateLocationTag",
-  noun: "Tag (Location)",
+export const updateTask = defineCreate({
+  key: "updateTask",
+  noun: "Task",
 
   display: {
-    label: "Update Location Tag",
-    description: "Updates an existing location tag",
+    label: "Update Task",
+    description: "Updates an existing task",
   },
 
   operation: {

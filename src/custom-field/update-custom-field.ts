@@ -7,29 +7,43 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
+  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "tagId", label: "Tag ID", type: "string", required: true },
-  { key: "name", label: "Tag Name", type: "string", required: false },
+  { key: "name", label: "Name", type: "string", required: true },
+  { key: "placeholder", label: "Placeholder", type: "string" },
+  { key: "accepted_format", label: "Accepted Format", type: "string", list: true },
+  { key: "is_multiple_file", label: "Is Multiple File", type: "boolean" },
+  { key: "max_number_of_files", label: "Max Number Of Files", type: "integer" },
+  {
+    key: "text_box_list_options",
+    label: "Text Box List Options",
+    children: [
+      { key: "label", label: "Label", type: "string" },
+      { key: "prefill_value", label: "Prefill Value", type: "string" },
+    ],
+  },
+  { key: "position", label: "Position", type: "integer" },
+  { key: "model", label: "Model", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { locationId, tagId, ...body } = bundle.inputData;
+  const { customFieldId, locationId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "PUT",
-    url: `${ENV.API_URL}/locations/${locationId}/tags/${tagId}`,
+    url: `${ENV.API_URL}/custom-fields/${customFieldId}?location-id=${locationId}`,
     body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const updateLocationTag = defineCreate({
-  key: "updateLocationTag",
-  noun: "Tag (Location)",
+export const updateCustomField = defineCreate({
+  key: "updateCustomField",
+  noun: "Custom Field",
 
   display: {
-    label: "Update Location Tag",
-    description: "Updates an existing location tag",
+    label: "Update Custom Field",
+    description: "Updates an existing custom field",
   },
 
   operation: {

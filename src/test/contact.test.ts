@@ -39,19 +39,19 @@ describe("contact", () => {
     expect(results).toBeDefined();
   });
 
-  // it("update: should modify contact", async () => {
-  //   const bundle = {
-  //     authData,
-  //     inputData: {
-  //       contactId: testedContact.id,
-  //       email: "updated@example.com",
-  //       name: "Updated Name",
-  //     },
-  //   };
+  it("update: should modify contact", async () => {
+    const bundle = {
+      authData,
+      inputData: {
+        contactId: testedContact.id,
+        email: "updated@example.com",
+        name: "Updated Name",
+      },
+    };
 
-  //   const result = await appTester(App.creates["updateContact"].operation.perform as any, bundle);
-  //   expect(result).toBeDefined();
-  // });
+    const result = await appTester(App.creates["updateContact"].operation.perform as any, bundle);
+    expect(result).toBeDefined();
+  });
 
   it("delete: should remove contact", async () => {
     const bundle = {

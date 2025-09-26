@@ -9,59 +9,65 @@ import { updateContact } from "./contact/update-contact.js";
 import { deleteContact } from "./contact/delete-contact.js";
 import { getContact } from "./contact/get-contact.js";
 
-import createTask from "./creates/task.js";
-import updateTask from "./updates/task.js";
-import deleteTask from "./deletes/task.js";
-import findTask from "./searches/task.js";
+import { createTask } from "./task/create-task.js";
+import { updateTask } from "./task/update-task.js";
+import { deleteTask } from "./task/delete-task.js";
+import { getTasks } from "./task/get-tasks.js";
+import { getTask } from "./task/get-task.js";
+import { completeTask } from "./task/complete-task.js";
 
-import createNote from "./creates/note.js";
-import updateNote from "./updates/note.js";
-import deleteNote from "./deletes/note.js";
-import findNote from "./searches/note.js";
+import { getAppointments } from "./appointment/get-appointments.js";
 
-import createCustomField from "./creates/custom-field.js";
-import updateCustomField from "./updates/custom-field.js";
-import deleteCustomField from "./deletes/custom-field.js";
-import findCustomField from "./searches/custom-field.js";
+import { createNote } from "./note/create-note.js";
+import { updateNote } from "./note/update-note.js";
+import { deleteNote } from "./note/delete-note.js";
+import { getNotes } from "./note/get-notes.js";
+import { getNote } from "./note/get-note.js";
+
+import { createCustomField } from "./custom-field/create-custom-field.js";
+import { updateCustomField } from "./custom-field/update-custom-field.js";
+import { deleteCustomField } from "./custom-field/delete-custom-field.js";
+import { getCustomFields } from "./custom-field/get-custom-fields.js";
+import { getCustomField } from "./custom-field/get-custom-field.js";
+
+import { createCustomValue } from "./custom-value/create-custom-value.js";
+import { updateCustomValue } from "./custom-value/update-custom-value.js";
+import { deleteCustomValue } from "./custom-value/delete-custom-value.js";
+import { getCustomValues } from "./custom-value/get-custom-values.js";
+import { getCustomValue } from "./custom-value/get-custom-value.js";
+
 import {
   createConversation,
   updateConversation,
   deleteConversation,
   searchConversation,
 } from "./conversation/index.js";
-import {
-  createCustomValue,
-  updateCustomValue,
-  deleteCustomValue,
-  searchCustomValue,
-} from "./custom-value/index.js";
+
 import {
   createAppointmentNote,
   updateAppointmentNote,
   deleteAppointmentNote,
   searchAppointmentNote,
 } from "./appointment-note/index.js";
-import { createLocationTag, updateLocationTag, deleteLocationTag, searchLocationTag, createContactTag, deleteContactTag } from "./tag/index.js";
+import { createLocationTag, updateLocationTag, deleteLocationTag,  createContactTag, deleteContactTag, getLocationTag } from "./tag/index.js";
 import {
   createLocation,
   deleteLocation,
   searchLocation,
   updateLocation,
 } from "./sub-account/index.js";
-import { createWorkflow, deleteWorkflow } from "./workflow/index.js";
-import { completeTask } from "./task/complete-task.js";
-import {
-  createAppointmentEvent,
-  updateAppointmentEvent,
-  deleteCalendarEvent,
-  createCalendarBlockSlot,
-  updateCalendarBlockSlot,
-} from "./calendar-event/index.js";
+import { addContactWorkflow, deleteContactWorkflow } from "./workflow/index.js";
+
 import { getBlockSlots } from "./calendar-event/get-block-slots.js";
-import { getTasks } from "./task/get-tasks.js";
-import { getNotes } from "./note/get-notes.js";
-import { getAppointment } from "./calendar-event/get-appointment.js";
+import { getAppointmentEvent } from "./calendar-event/get-appointment.js";
 import { getCalendarEvents } from "./calendar-event/get-calendar-events.js";
+import { getLocationTags } from "./tag/get-location-tags.js";
+import { createAppointmentEvent } from "./calendar-event/create-appointment.js";
+import { updateAppointmentEvent } from "./calendar-event/update-appointment.js";
+import { deleteCalendarEvent } from "./calendar-event/delete-calendar-event.js";
+import { createCalendarBlockSlot } from "./calendar-event/create-block-slot.js";
+import { updateCalendarBlockSlot } from "./calendar-event/update-block-slot.js";
+
 
 export default defineApp({
   // IMPORTANT: Note the use of `defineApp`
@@ -83,6 +89,7 @@ export default defineApp({
     [updateTask.key]: updateTask,
     [deleteTask.key]: deleteTask,
     [completeTask.key]: completeTask,
+
     // Notes
     [createNote.key]: createNote,
     [updateNote.key]: updateNote,
@@ -120,8 +127,8 @@ export default defineApp({
     [deleteLocation.key]: deleteLocation,
 
     // Workflows
-    [createWorkflow.key]: createWorkflow,
-    [deleteWorkflow.key]: deleteWorkflow,
+    [addContactWorkflow.key]: addContactWorkflow,
+    [deleteContactWorkflow.key]: deleteContactWorkflow,
 
     // Calendar Events
     [createAppointmentEvent.key]: createAppointmentEvent,
@@ -133,19 +140,31 @@ export default defineApp({
 
   searches: {
     [getContact.key]: getContact,
-    [findTask.key]: findTask,
+
     [getTasks.key]: getTasks,
-    [findNote.key]: findNote,
+    [getTask.key]: getTask,
+
+    [getAppointments.key]: getAppointments,
+
+    [getLocationTags.key]: getLocationTags,
+    [getLocationTag.key]: getLocationTag,
+
     [getNotes.key]: getNotes,
-    [findCustomField.key]: findCustomField,
+    [getNote.key]: getNote,
+
+    [getCustomFields.key]: getCustomFields,
+    [getCustomField.key]: getCustomField,
+
+    [getCustomValues.key]: getCustomValues,
+    [getCustomValue.key]: getCustomValue,
+
     [searchConversation.key]: searchConversation,
-    [searchCustomValue.key]: searchCustomValue,
     [searchAppointmentNote.key]: searchAppointmentNote,
-    [searchLocationTag.key]: searchLocationTag,
     [searchLocation.key]: searchLocation,
+
     [getCalendarEvents.key]: getCalendarEvents,
     [getBlockSlots.key]: getBlockSlots,
-    [getAppointment.key]: getAppointment,
+    [getAppointmentEvent.key]: getAppointmentEvent,
   },
 
   triggers: {},

@@ -1,36 +1,43 @@
 import {
   defineInputFields,
-  defineCreate,
-  type CreatePerform,
+  defineSearch,
+  type SearchPerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "noteId", required: true, type: "string", label: "Note ID" },
+  { key: "contactId", label: "Contact ID", type: "string", required: true },
+  { key: "noteId", label: "Note ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    method: "DELETE",
     url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/notes/${bundle.inputData.noteId}`,
   });
-  return response.data;
-}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
+  // this should return an array of objects (but only the first will be used)
+  return [response.data.note];
+}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "deleteNote",
-  noun: "Delete Note",
+export const getNote = defineSearch({
+  key: "getNote",
+  noun: "Note",
 
   display: {
-    label: "Delete Note",
-    description: "Delete a Note by ID",
+    label: "Get Note",
+    description: "Get a Note by ID",
   },
 
   operation: {
     perform,
+
+    // `inputFields` defines the fields a user could provide
+    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
+
+    // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
+    // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
+    // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
       id: 1,
       name: "Test",
@@ -43,7 +50,6 @@ export default defineCreate({
     outputFields: [
       // these are placeholders to match the example `perform` above
       // { key: "id", label: "Contact ID" },
-      // { key: "name", label: "Contact Name" },
     ],
   },
 });

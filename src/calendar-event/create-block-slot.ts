@@ -7,15 +7,15 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "title", label: "Title", type: "string", required: true },
+  { key: "title", label: "Title", type: "string" },
   { key: "calendar_id", label: "Calendar ID", type: "string", required: true },
-  { key: "assigned_user_id", label: "Assigned User ID", type: "string", required: true },
+  { key: "assigned_user_id", label: "Assigned User ID", type: "string" },
   { key: "location_id", label: "Location ID", type: "string", required: true },
-  { key: "time_zone", label: "Time Zone", type: "string", required: true },
-  { key: "start_date", label: "Start Date", type: "string", required: true },
-  { key: "start_time", label: "Start Time", type: "string", required: true },
-  { key: "end_date", label: "End Date", type: "string", required: true },
-  { key: "end_time", label: "End Time", type: "string", required: true },
+  { key: "time_zone", label: "Time Zone", type: "string" },
+  { key: "start_date", label: "Start Date", type: "string" },
+  { key: "start_time", label: "Start Time", type: "string" },
+  { key: "end_date", label: "End Date", type: "string" },
+  { key: "end_time", label: "End Time", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -45,9 +45,9 @@ export const createCalendarBlockSlot = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      calendar_id: ENV.TEST_CALENDAR_ID,
+      location_id: ENV.LOCATION_ID,
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

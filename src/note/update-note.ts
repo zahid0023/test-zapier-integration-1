@@ -7,41 +7,30 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "name", label: "Name", type: "string", required: true },
-  { key: "data_type", label: "Data Type", type: "string", required: true },
-  { key: "placeholder", label: "Placeholder", type: "string" },
-  { key: "accepted_format", label: "Accepted Format", type: "string", list: true },
-  { key: "is_multiple_file", label: "Is Multiple File", type: "boolean" },
-  { key: "max_number_of_files", label: "Max Number Of Files", type: "integer" },
-  {
-    key: "text_box_list_options",
-    label: "Text Box List Options",
-    children: [
-      { key: "label", label: "Label", type: "string" },
-      { key: "prefill_value", label: "Prefill Value", type: "string" },
-    ],
-  },
-  { key: "position", label: "Position", type: "integer" },
-  { key: "model", label: "Model", type: "string" },
+  { key: "contactId", label: "Contact ID", type: "string", required: true },
+  { key: "noteId", label: "Note ID", type: "string", required: true },
+  { key: "userId", label: "User ID", type: "string", required: true },
+  { key: "body", label: "Body", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { contactId, noteId, ...payload } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/custom-fields`,
-    body: bundle.inputData,
+    method: "PUT",
+    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
+    body: payload,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export default defineCreate({
-  key: "createCustomField",
-  noun: "Create Custom Field",
+export const updateNote = defineCreate({
+  key: "updateNote",
+  noun: "Note",
 
   display: {
-    label: "Create Custom Field",
-    description: "Creates a new custom field",
+    label: "Update Note",
+    description: "Updates an existing note",
   },
 
   operation: {

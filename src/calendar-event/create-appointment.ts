@@ -61,9 +61,12 @@ export const createAppointmentEvent = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      title: "New Appointment 1",
+      calendar_id: ENV.TEST_CALENDAR_ID,
+      location_id: ENV.LOCATION_ID,
+      contact_id: ENV.CONTACT_ID,
+      start_time: "2024-10-10T10:00:00Z",
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see
