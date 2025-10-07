@@ -8,28 +8,27 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "followers", label: "Followers", type: "string", required: true, list: true },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, ...payload } = bundle.inputData;
+  const { contactId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    url: `${ENV.API_URL}/contacts/${contactId}/followers`,
+    body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createNote = defineCreate({
-  key: "createNote",
-  noun: "Note",
+export const addFollower = defineCreate({
+  key: "addFollower",
+  noun: "Follower",
 
   display: {
-    label: "Create Note",
-    description: "Creates a new note",
+    label: "Add Follower",
+    description: "Adds followers to a contact",
   },
 
   operation: {
@@ -39,10 +38,6 @@ export const createNote = defineCreate({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      contactId: ENV.TEST_CONTACT_ID,
-      body: "This is a test note created via Zapier",
-    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

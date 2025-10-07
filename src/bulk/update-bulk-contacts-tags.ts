@@ -5,31 +5,34 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { TAGS_OPERATION_TYPE_ENUM } from "../enums/bulk.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "type", label: "Type", type: "string", required: true, choices: TAGS_OPERATION_TYPE_ENUM },
+  { key: "contacts", label: "Contacts", type: "string", required: true, list: true },
+  { key: "tags", label: "Tags", type: "string", required: true, list: true },
+  { key: "location_id", label: "Location ID", type: "string", required: false },
+  { key: "remove_all_tags", label: "Remove All Tags", type: "boolean", required: false },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, ...payload } = bundle.inputData;
+  const { type, ...body } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    url: `${ENV.API_URL}/contacts/bulk/tags/update/${type}`,
+    body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createNote = defineCreate({
-  key: "createNote",
-  noun: "Note",
+export const updateContactsTags = defineCreate({
+  key: "updateContactsTags",
+  noun: "Bulk",
 
   display: {
-    label: "Create Note",
-    description: "Creates a new note",
+    label: "Update Contacts Tags",
+    description: "Updates tags for multiple contacts",
   },
 
   operation: {
@@ -39,10 +42,6 @@ export const createNote = defineCreate({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      contactId: ENV.TEST_CONTACT_ID,
-      body: "This is a test note created via Zapier",
-    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

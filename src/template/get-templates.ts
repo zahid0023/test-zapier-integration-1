@@ -8,26 +8,34 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "groupId", label: "Group ID", type: "string" },
+  { key: "originId", label: "Origin ID", type: "string", required: true },
+  { key: "deleted", label: "Deleted", type: "boolean" },
+  { key: "limit", label: "Limit", type: "integer" },
+  { key: "skip", label: "Skip", type: "integer" },
+  { key: "type", label: "Type", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}${
-      bundle.inputData.groupId ? `&group-id=${bundle.inputData.groupId}` : ""
+    url: `${ENV.API_URL}/templates?location-id=${bundle.inputData.locationId}&origin-id=${
+      bundle.inputData.originId
+    }${bundle.inputData.deleted ? `&deleted=${bundle.inputData.deleted}` : ""}${
+      bundle.inputData.limit ? `&limit=${bundle.inputData.limit}` : ""
+    }${bundle.inputData.skip ? `&skip=${bundle.inputData.skip}` : ""}${
+      bundle.inputData.type ? `&type=${bundle.inputData.type}` : ""
     }`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getCalendars = defineSearch({
-  key: "getCalendars",
-  noun: "Calendar",
+export const getTemplates = defineSearch({
+  key: "getTemplates",
+  noun: "Template",
 
   display: {
-    label: "Get Calendars",
-    description: "Get all Calendars",
+    label: "Get Templates",
+    description: "Get all Templates for a Contact",
   },
 
   operation: {
@@ -41,9 +49,9 @@ export const getCalendars = defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      id: 1,
-      name: "Test",
-    },
+      locationId: ENV.LOCATION_ID,
+      originId: ENV.TEST_ORIGIN_ID,
+    } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

@@ -1,47 +1,47 @@
 import {
   defineInputFields,
-  defineCreate,
-  type CreatePerform,
+  defineSearch,
+  type SearchPerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "status", label: "Status", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, ...payload } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    url: `${ENV.API_URL}/campaigns?locationId=${bundle.inputData.locationId}${
+      bundle.inputData.status ? `&status=${bundle.inputData.status}` : ""
+    }`,
   });
-  // this should return a single object
-  return response.data;
-}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
+  // this should return an array of objects (but only the first will be used)
+  return [response.data];
+}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const createNote = defineCreate({
-  key: "createNote",
-  noun: "Note",
+export const getCampaigns = defineSearch({
+  key: "getCampaigns",
+  noun: "Campaign",
 
   display: {
-    label: "Create Note",
-    description: "Creates a new note",
+    label: "Get Campaigns",
+    description: "Get all Campaigns for a Location",
   },
 
   operation: {
     perform,
+
+    // `inputFields` defines the fields a user could provide
+    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: ENV.TEST_CONTACT_ID,
-      body: "This is a test note created via Zapier",
+      locationId: ENV.LOCATION_ID,
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
@@ -50,8 +50,7 @@ export const createNote = defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // {key: 'id', label: 'Person ID'},
-      // {key: 'name', label: 'Person Name'}
+      // { key: "id", label: "Contact ID" },
     ],
   },
 });

@@ -7,29 +7,29 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "location_id", label: "Location ID", type: "string", required: true },
+  { key: "is_typing", label: "Is Typing", type: "boolean", required: true },
+  { key: "visitor_id", label: "Visitor ID", type: "string", required: true },
+  { key: "conversation_id", label: "Conversation ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, ...payload } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    url: `${ENV.API_URL}/providers/live-chat/typing`,
+    body: bundle.inputData,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createNote = defineCreate({
-  key: "createNote",
-  noun: "Note",
+export const createProviderLiveChatTyping = defineCreate({
+  key: "createProviderLiveChatTyping",
+  noun: "Provider Live Chat Typing",
 
   display: {
-    label: "Create Note",
-    description: "Creates a new note",
+    label: "Create Provider Live Chat Typing",
+    description: "Creates a new provider live chat typing",
   },
 
   operation: {
@@ -40,8 +40,10 @@ export const createNote = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: ENV.TEST_CONTACT_ID,
-      body: "This is a test note created via Zapier",
+      location_id: ENV.LOCATION_ID,
+      is_typing: true,
+      visitor_id: "string",
+      conversation_id: "string",
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

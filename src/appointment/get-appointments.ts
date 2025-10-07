@@ -38,7 +38,7 @@ export const getAppointments = defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: "ODUO6yJQiACv40RCkSmq",
+      contactId: ENV.TEST_CONTACT_ID,
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

@@ -31,7 +31,11 @@ const perform = (async (z, bundle) => {
     endTime = "",
   } = bundle.inputData;
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars/events/events?calendar-id?calendar-id=${calendarId}&group-id=${groupId}&user-id=${userId}&location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}`,
+    url: `${
+      ENV.API_URL
+    }calendar/events/events?location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}${
+      calendarId ? `&calendar-id=${calendarId}` : ""
+    }${groupId ? `&group-id=${groupId}` : ""}${userId ? `&user-id=${userId}` : ""}`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data.events];

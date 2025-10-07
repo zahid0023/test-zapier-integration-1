@@ -7,27 +7,36 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "groupId", label: "Group ID", type: "string" },
+  { key: "calendarId", label: "Calendar ID", type: "string", required: true },
+  { key: "timezone", label: "Time Zone", type: "string" },
+  { key: "userId", label: "User ID", type: "string" },
+  { key: "startDate", label: "Start Date", type: "string", required: true },
+  { key: "startTime", label: "Start Time", type: "string", required: true },
+  { key: "endDate", label: "End Date", type: "string", required: true },
+  { key: "endTime", label: "End Time", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}${
-      bundle.inputData.groupId ? `&group-id=${bundle.inputData.groupId}` : ""
+    url: `${ENV.API_URL}/calendars/${bundle.inputData.calendarId}/free-slots?start-date=${
+      bundle.inputData.startDate
+    }&start-time=${bundle.inputData.startTime}&end-date=${bundle.inputData.endDate}&end-time=${
+      bundle.inputData.endTime
+    }${bundle.inputData.timezone ? `&time-zone=${bundle.inputData.timezone}` : ""}${
+      bundle.inputData.userId ? `&user-id=${bundle.inputData.userId}` : ""
     }`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getCalendars = defineSearch({
-  key: "getCalendars",
-  noun: "Calendar",
+export const getCalendarFreeSlots = defineSearch({
+  key: "getCalendarFreeSlots",
+  noun: "Calendar Free Slot",
 
   display: {
-    label: "Get Calendars",
-    description: "Get all Calendars",
+    label: "Get Calendar Free Slots",
+    description: "Get free slots for a specific Calendar by ID",
   },
 
   operation: {

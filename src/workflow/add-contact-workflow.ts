@@ -42,8 +42,8 @@ export const addContactWorkflow = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: ENV.CONTACT_ID,
-      workflowId: "sx6wyHhbFdRXh302LLNR",
+      contactId: ENV.TEST_CONTACT_ID,
+      workflowId: ENV.TEST_WORKFLOW_ID,
       dateTime: "2024-12-31",
       time: "15:30",
       time_zone: "America/New_York",

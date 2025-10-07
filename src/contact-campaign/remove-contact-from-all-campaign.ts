@@ -8,28 +8,24 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "body", label: "Body", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { contactId, ...payload } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
-    body: payload,
+    method: "DELETE",
+    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}/campaigns/removeAll`,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createNote = defineCreate({
-  key: "createNote",
-  noun: "Note",
+export const removeContactFromAllCampaign = defineCreate({
+  key: "removeContactFromAllCampaign",
+  noun: "Contact (Campaign)",
 
   display: {
-    label: "Create Note",
-    description: "Creates a new note",
+    label: "Remove Contact from All Campaigns",
+    description: "Removes a contact from all campaigns",
   },
 
   operation: {
@@ -41,7 +37,6 @@ export const createNote = defineCreate({
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
       contactId: ENV.TEST_CONTACT_ID,
-      body: "This is a test note created via Zapier",
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

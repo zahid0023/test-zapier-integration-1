@@ -64,7 +64,7 @@ export const createAppointmentEvent = defineCreate({
       title: "New Appointment 1",
       calendar_id: ENV.TEST_CALENDAR_ID,
       location_id: ENV.LOCATION_ID,
-      contact_id: ENV.CONTACT_ID,
+      contact_id: ENV.TEST_CONTACT_ID,
       start_time: "2024-10-10T10:00:00Z",
     } satisfies InferInputData<typeof inputFields>,
 

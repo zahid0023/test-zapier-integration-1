@@ -5,6 +5,7 @@
 //   type InferInputData,
 // } from "zapier-platform-core";
 // import { ENV } from "../config/env.js";
+// import { LOCATION_CONFIG_KIND_ENUM, TEAM_MEMBER_PRIORITY_ENUM } from "../enums/calendar.enum.js";
 
 // const inputFields = defineInputFields([
 //   { key: "group_id", label: "Group ID", type: "string" },
@@ -13,14 +14,19 @@
 //     label: "Team Members",
 //     children: [
 //       { key: "user_id", label: "User ID", type: "string", required: true },
-//       { key: "priority", label: "Priority", type: "number" },
+//       { key: "priority", label: "Priority", type: "number", choices: TEAM_MEMBER_PRIORITY_ENUM },
 //       { key: "is_primary", label: "Is Primary", type: "boolean" },
 //       {
 //         key: "location_configurations",
 //         label: "Location Configurations",
-//         required: false,
 //         children: [
-//           { key: "kind", label: "Kind", type: "string", required: true },
+//           {
+//             key: "kind",
+//             label: "Kind",
+//             type: "string",
+//             required: true,
+//             choices: LOCATION_CONFIG_KIND_ENUM,
+//           },
 //           { key: "location", type: "string", label: "Location" },
 //         ],
 //       },
@@ -228,7 +234,6 @@
 //   {
 //     key: "availabilities",
 //     label: "Availabilities",
-//     required: false,
 //     children: [
 //       { key: "date", type: "string", label: "Date", required: true },
 //       {

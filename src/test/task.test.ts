@@ -10,7 +10,7 @@ zapier.tools.env.inject();
 
 describe("task", () => {
   const authData = { apiKey: ENV.AUTH_DATA_API_KEY };
-  let contactId = "ODUO6yJQiACv40RCkSmq";
+  let contactId = ENV.TEST_CONTACT_ID;
   let testedTask: any = null;
 
   it("create: should create a task", async () => {
