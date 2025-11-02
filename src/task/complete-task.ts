@@ -8,8 +8,14 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
-  { key: "complete", label: "Complete", type: "boolean", required: false },
+  {
+    key: "taskId",
+    label: "Task ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Task ID from the 'Get All Tasks' action.",
+  },
+  { key: "completed", label: "Completed", type: "boolean", required: true },
 ]);
 
 // create a particular contact by name
@@ -17,7 +23,7 @@ const perform = (async (z, bundle) => {
   const { contactId, taskId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "PUT",
-    url: `${ENV.API_URL}/contacts/${contactId}/tasks/${taskId}/complete`,
+    url: `${ENV.API_URL}/contacts/${contactId}/tasks/${taskId}/completed`,
     body,
   });
   // this should return a single object

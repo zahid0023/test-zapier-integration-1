@@ -7,8 +7,20 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "appointId", label: "Appointment ID", type: "string", required: true },
-  { key: "noteId", label: "Note ID", type: "string", required: true },
+  {
+    key: "appointId",
+    label: "Appointment ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Events ID from the 'Get All Appointments' action.",
+  },
+  {
+    key: "noteId",
+    label: "Note ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Note ID from the 'Get All Appointment Notes' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {

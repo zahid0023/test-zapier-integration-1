@@ -23,7 +23,7 @@ export const getCustomValues = defineSearch({
   noun: "Custom Value",
 
   display: {
-    label: "Get Custom Values",
+    label: "Get All Custom Values",
     description: "Get all Custom Values",
   },
 

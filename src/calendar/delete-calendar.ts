@@ -7,7 +7,13 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "calendarId", label: "Calendar ID", required: true, type: "string" },
+  {
+    key: "calendarId",
+    label: "Calendar ID",
+    required: true,
+    type: "string",
+    helpText: "Get the Calendar ID from the 'Get All Calendars' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {

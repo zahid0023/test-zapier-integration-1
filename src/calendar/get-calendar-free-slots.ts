@@ -9,11 +9,28 @@ import { ENV } from "../config/env.js";
 const inputFields = defineInputFields([
   { key: "calendarId", label: "Calendar ID", type: "string", required: true },
   { key: "timezone", label: "Time Zone", type: "string" },
-  { key: "userId", label: "User ID", type: "string" },
-  { key: "startDate", label: "Start Date", type: "string", required: true },
-  { key: "startTime", label: "Start Time", type: "string", required: true },
-  { key: "endDate", label: "End Date", type: "string", required: true },
-  { key: "endTime", label: "End Time", type: "string", required: true },
+  {
+    key: "userId",
+    label: "User ID",
+    type: "string",
+    helpText: "Get the User ID from the 'Get All Users' action.",
+  },
+  {
+    key: "startDate",
+    label: "Start Date",
+    type: "string",
+    required: true,
+    placeholder: "2024-12-31",
+  },
+  {
+    key: "startTime",
+    label: "Start Time",
+    type: "string",
+    required: true,
+    placeholder: "09:00:00",
+  },
+  { key: "endDate", label: "End Date", type: "string", required: true, placeholder: "2024-12-31" },
+  { key: "endTime", label: "End Time", type: "string", required: true, placeholder: "17:00:00" },
 ]);
 
 const perform = (async (z, bundle) => {

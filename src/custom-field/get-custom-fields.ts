@@ -18,7 +18,7 @@ const perform = (async (z, bundle) => {
     }`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.customField];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
 export const getCustomFields = defineSearch({
@@ -26,7 +26,7 @@ export const getCustomFields = defineSearch({
   noun: "Custom Field",
 
   display: {
-    label: "Get Custom Fields",
+    label: "Get All Custom Fields",
     description: "Get all Custom Fields",
   },
 

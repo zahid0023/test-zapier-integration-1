@@ -7,40 +7,28 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  {
-    key: "appointId",
-    label: "Appointment ID",
-    type: "string",
-    required: true,
-    helpText: "Get the Events ID from the 'Get All Appointments' action.",
-  },
-  {
-    key: "user_id",
-    label: "User ID",
-    type: "string",
-    helpText: "Get the User ID from the 'Get All Users' action.",
-  },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "groupId", label: "Group ID", type: "string", required: true },
+  { key: "is_active", label: "Is Active", type: "boolean", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { appointId, ...body } = bundle.inputData;
+  const { groupId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/appointments/${appointId}/notes`,
+    method: "PUT",
+    url: `${ENV.API_URL}/calendars/groups/${groupId}/status`,
     body,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createAppointmentNote = defineCreate({
-  key: "createAppointmentNote",
-  noun: "Create Appointment Note",
+export const calendarGroupDisable = defineCreate({
+  key: "calendarGroupDisable",
+  noun: "Calendar Group",
 
   display: {
-    label: "Create Appointment Note",
-    description: "Creates a new appointment note",
+    label: "Disable Calendar Group",
+    description: "Disable an existing calendar group",
   },
 
   operation: {

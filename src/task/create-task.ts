@@ -5,15 +5,37 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
   { key: "title", label: "Title", type: "string", required: true },
-  { key: "body", label: "Body", type: "string", required: false },
-  { key: "due_date", label: "Due Date", type: "string", required: true },
-  { key: "due_time", label: "Due Time", type: "string", required: false },
+  { key: "body", label: "Body", type: "string" },
+  {
+    key: "due_date",
+    label: "Due Date",
+    type: "string",
+    placeholder: "2024-12-31",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+    required: true,
+  },
+  {
+    key: "due_time",
+    label: "Due Time",
+    type: "string",
+    placeholder: "17:00:30",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+    required: true,
+  },
+  { key: "time_zone", label: "Time Zone", type: "string", choices: Timezone, required: true },
   { key: "completed", label: "Completed", type: "boolean", required: true },
-  { key: "assigned_to", label: "Assigned To", type: "string", required: false },
+  {
+    key: "assigned_to",
+    label: "Assigned To",
+    type: "string",
+    required: false,
+    helpText: "Get the assigned ID from the 'Get All Users' action",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -44,9 +66,11 @@ export const createTask = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: "ODUO6yJQiACv40RCkSmq",
+      contactId: ENV.TEST_CONTACT_ID,
       title: "Test Task 1",
-      due_date: "2020-10-25T11:00:00Z",
+      due_date: "2024-12-31",
+      due_time: "17:00",
+      time_zone: "America/New_York",
       completed: false,
     } satisfies InferInputData<typeof inputFields>,
 

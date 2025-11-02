@@ -23,7 +23,7 @@ export const getLocationTags = defineSearch({
   noun: "Tag (Location)",
 
   display: {
-    label: "Get location Tags",
+    label: "Get All Location Tags",
     description: "Get all tags for a location",
   },
 

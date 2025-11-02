@@ -5,13 +5,14 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
   { key: "workflowId", label: "Workflow ID", type: "string", required: true },
-  { key: "dateTime", label: "Date Time", type: "string" },
+  { key: "date", label: "Date Time", type: "string" },
   { key: "time", label: "Time", type: "string" },
-  { key: "time_zone", label: "Timezone", type: "string" },
+  { key: "time_zone", label: "Timezone", type: "string", choices: Timezone },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -44,7 +45,7 @@ export const addContactWorkflow = defineCreate({
     sample: {
       contactId: ENV.TEST_CONTACT_ID,
       workflowId: ENV.TEST_WORKFLOW_ID,
-      dateTime: "2024-12-31",
+      date: "2024-10-30",
       time: "15:30",
       time_zone: "America/New_York",
     } satisfies InferInputData<typeof inputFields>,

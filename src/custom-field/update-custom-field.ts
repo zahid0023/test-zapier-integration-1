@@ -7,7 +7,13 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
+  {
+    key: "customFieldId",
+    label: "Custom Field ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Custom Field ID from the 'Get All Custom Fields' action.",
+  },
   { key: "locationId", label: "Location ID", type: "string", required: true },
   { key: "name", label: "Name", type: "string", required: true },
   { key: "placeholder", label: "Placeholder", type: "string" },

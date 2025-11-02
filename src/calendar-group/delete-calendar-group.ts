@@ -7,40 +7,25 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  {
-    key: "appointId",
-    label: "Appointment ID",
-    type: "string",
-    required: true,
-    helpText: "Get the Events ID from the 'Get All Appointments' action.",
-  },
-  {
-    key: "user_id",
-    label: "User ID",
-    type: "string",
-    helpText: "Get the User ID from the 'Get All Users' action.",
-  },
-  { key: "body", label: "Body", type: "string", required: true },
+  { key: "groupId", label: "Group ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { appointId, ...body } = bundle.inputData;
   const response = await z.request({
-    method: "POST",
-    url: `${ENV.API_URL}/appointments/${appointId}/notes`,
-    body,
+    method: "DELETE",
+    url: `${ENV.API_URL}/calendars/groups/${bundle.inputData.groupId}`,
   });
   // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const createAppointmentNote = defineCreate({
-  key: "createAppointmentNote",
-  noun: "Create Appointment Note",
+export const deleteCalendarGroup = defineCreate({
+  key: "deleteCalendarGroup",
+  noun: "Calendar Group",
 
   display: {
-    label: "Create Appointment Note",
-    description: "Creates a new appointment note",
+    label: "Delete Calendar Group",
+    description: "Deletes an existing calendar group",
   },
 
   operation: {
@@ -50,6 +35,10 @@ export const createAppointmentNote = defineCreate({
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
+    sample: {
+      id: 1,
+      name: "Test",
+    },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

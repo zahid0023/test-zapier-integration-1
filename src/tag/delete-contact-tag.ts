@@ -8,7 +8,13 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "tags", label: "Tags", type: "string", list: true },
+  {
+    key: "tags",
+    label: "Tags",
+    type: "string",
+    list: true,
+    helpText: "To add multiple tags, press enter.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {

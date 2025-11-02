@@ -65,7 +65,7 @@ export const createAppointmentEvent = defineCreate({
       calendar_id: ENV.TEST_CALENDAR_ID,
       location_id: ENV.LOCATION_ID,
       contact_id: ENV.TEST_CONTACT_ID,
-      start_time: "2024-10-10T10:00:00Z",
+      start_time: "2025-11-30T10:00:00Z",
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

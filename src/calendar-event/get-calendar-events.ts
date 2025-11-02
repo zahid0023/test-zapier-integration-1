@@ -5,17 +5,67 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "calendarId", label: "Calendar ID", type: "string" },
-  { key: "groupId", label: "Group ID", type: "string" },
-  { key: "userId", label: "User ID", type: "string" },
+  {
+    key: "calendarId",
+    label: "Calendar ID",
+    type: "string",
+    helpText: "Get the Calendar ID from the 'Get All Calendars' action.",
+  },
+  {
+    key: "groupId",
+    label: "Group ID",
+    type: "string",
+    helpText: "Get the Group ID from the 'Get All Calendar Groups' action.",
+  },
+  {
+    key: "userId",
+    label: "User ID",
+    type: "string",
+    helpText: "Get the User ID from the 'Get All Users' action.",
+  },
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "timezone", label: "Timezone", type: "string", required: true },
-  { key: "startDate", label: "Start Date", type: "string", required: true },
-  { key: "startTime", label: "Start Time", type: "string", required: true },
-  { key: "endDate", label: "End Date", type: "string", required: true },
-  { key: "endTime", label: "End Time", type: "string", required: true },
+  {
+    key: "timezone",
+    label: "Timezone",
+    type: "string",
+    default: Timezone["America/New_York"],
+    choices: Timezone,
+  },
+  {
+    key: "startDate",
+    label: "Start Date",
+    type: "string",
+    required: true,
+    placeholder: "2024-12-31",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "startTime",
+    label: "Start Time",
+    type: "string",
+    required: true,
+    placeholder: "09:00:00",
+    helpText: "The value of this field should be in HH:MM:SS format",
+  },
+  {
+    key: "endDate",
+    label: "End Date",
+    type: "string",
+    required: true,
+    placeholder: "2024-12-31",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "endTime",
+    label: "End Time",
+    type: "string",
+    required: true,
+    placeholder: "17:00:00",
+    helpText: "The value of this field should be in HH:MM:SS format",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -33,7 +83,7 @@ const perform = (async (z, bundle) => {
   const response = await z.request({
     url: `${
       ENV.API_URL
-    }calendar/events/events?location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}${
+    }/calendars/events/events?location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}${
       calendarId ? `&calendar-id=${calendarId}` : ""
     }${groupId ? `&group-id=${groupId}` : ""}${userId ? `&user-id=${userId}` : ""}`,
   });

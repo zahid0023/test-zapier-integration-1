@@ -8,7 +8,13 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
+  {
+    key: "customFieldId",
+    label: "Custom Field ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Custom Field ID from the 'Get All Custom Fields' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {

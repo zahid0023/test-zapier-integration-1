@@ -8,7 +8,13 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "tags", label: "Tags", type: "string", list: true },
+  {
+    key: "tags",
+    label: "Tags",
+    type: "string",
+    list: true,
+    helpText: "To add multiple tags, press enter.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -39,7 +45,7 @@ export const createContactTag = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: "ODUO6yJQiACv40RCkSmq",
+      contactId: ENV.TEST_CONTACT_ID,
       tags: ["Test Tag1", "Test Tag2"],
     },
 

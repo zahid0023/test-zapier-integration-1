@@ -8,8 +8,19 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "noteId", label: "Note ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string", required: true },
+  {
+    key: "noteId",
+    label: "Note ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Note ID from the 'Get All Notes' action.",
+  },
+  {
+    key: "user_id",
+    label: "User ID",
+    type: "string",
+    helpText: "Get the User ID from the 'Get All Users' action.",
+  },
   { key: "body", label: "Body", type: "string", required: true },
 ]);
 
@@ -17,7 +28,7 @@ const perform = (async (z, bundle) => {
   const { contactId, noteId, ...payload } = bundle.inputData;
   const response = await z.request({
     method: "PUT",
-    url: `${ENV.API_URL}/contacts/${contactId}/notes`,
+    url: `${ENV.API_URL}/contacts/${contactId}/notes/${noteId}`,
     body: payload,
   });
   // this should return a single object

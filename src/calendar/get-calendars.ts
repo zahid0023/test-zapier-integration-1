@@ -8,7 +8,12 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "groupId", label: "Group ID", type: "string" },
+  {
+    key: "groupId",
+    label: "Group ID",
+    type: "string",
+    helpText: "Get the Group ID from the 'Get All Calendar Groups' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -26,7 +31,7 @@ export const getCalendars = defineSearch({
   noun: "Calendar",
 
   display: {
-    label: "Get Calendars",
+    label: "Get All Calendars",
     description: "Get all Calendars",
   },
 

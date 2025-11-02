@@ -47,7 +47,7 @@ import {
   createAppointmentNote,
   updateAppointmentNote,
   deleteAppointmentNote,
-  searchAppointmentNote,
+  getAppointmentNotes,
 } from "./appointment-note/index.js";
 import { createLocationTag, updateLocationTag, deleteLocationTag,  createContactTag, deleteContactTag, getLocationTag } from "./tag/index.js";
 import {
@@ -68,6 +68,22 @@ import { deleteCalendarEvent } from "./calendar-event/delete-calendar-event.js";
 import { createCalendarBlockSlot } from "./calendar-event/create-block-slot.js";
 import { updateCalendarBlockSlot } from "./calendar-event/update-block-slot.js";
 
+import { createCalendarGroup } from "./calendar-group/create-calendar-group.js";
+import { updateCalendarGroup } from "./calendar-group/update-calendar-group.js";
+import { deleteCalendarGroup } from "./calendar-group/delete-calendar-group.js";
+import { calendarGroupDisable } from "./calendar-group/calendar-group-disable.js";
+import { calendarGroupValidateSlug } from "./calendar-group/calendar-group-validate-slug.js";
+import { getCalendarGroups } from "./calendar-group/get-calendar-groups.js";
+
+import { createUser } from "./user/create-user.js";
+import { updateUser } from "./user/update-user.js";
+import { deleteUser } from "./user/delete-user.js";
+import { getUsers } from "./user/get-users.js";
+import { getUser } from "./user/get-user.js";
+import { deleteCalendar } from "./calendar/delete-calendar.js";
+import { getCalendars } from "./calendar/get-calendars.js";
+import { getCalendar } from "./calendar/get-calendar.js";
+import { getCalendarFreeSlots } from "./calendar/get-calendar-free-slots.js";
 
 export default defineApp({
   // IMPORTANT: Note the use of `defineApp`
@@ -130,12 +146,27 @@ export default defineApp({
     [addContactWorkflow.key]: addContactWorkflow,
     [deleteContactWorkflow.key]: deleteContactWorkflow,
 
+    // Calendar
+    [deleteCalendar.key]: deleteCalendar,
+
     // Calendar Events
     [createAppointmentEvent.key]: createAppointmentEvent,
     [updateAppointmentEvent.key]: updateAppointmentEvent,
     [deleteCalendarEvent.key]: deleteCalendarEvent,
     [createCalendarBlockSlot.key]: createCalendarBlockSlot,
     [updateCalendarBlockSlot.key]: updateCalendarBlockSlot,
+
+    // Calendar Groups
+    [createCalendarGroup.key]: createCalendarGroup,
+    [updateCalendarGroup.key]: updateCalendarGroup,
+    [deleteCalendarGroup.key]: deleteCalendarGroup,
+    [calendarGroupValidateSlug.key]: calendarGroupValidateSlug,
+    [calendarGroupDisable.key]: calendarGroupDisable,
+
+    // Users
+    [createUser.key]: createUser,
+    [updateUser.key]: updateUser,
+    [deleteUser.key]: deleteUser,
   },
 
   searches: {
@@ -159,12 +190,21 @@ export default defineApp({
     [getCustomValue.key]: getCustomValue,
 
     [searchConversation.key]: searchConversation,
-    [searchAppointmentNote.key]: searchAppointmentNote,
+    [getAppointmentNotes.key]: getAppointmentNotes,
     [searchLocation.key]: searchLocation,
 
     [getCalendarEvents.key]: getCalendarEvents,
     [getBlockSlots.key]: getBlockSlots,
     [getAppointmentEvent.key]: getAppointmentEvent,
+    
+    [getCalendarGroups.key]: getCalendarGroups,
+
+    [getUsers.key]: getUsers,
+    [getUser.key]: getUser,
+
+    [getCalendars.key]: getCalendars,
+    [getCalendar.key]: getCalendar,
+    [getCalendarFreeSlots.key]: getCalendarFreeSlots,
   },
 
   triggers: {},

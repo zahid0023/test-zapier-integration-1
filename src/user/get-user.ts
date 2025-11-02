@@ -8,30 +8,29 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   {
-    key: "customValueId",
-    label: "Custom Value ID",
+    key: "userId",
+    label: "User ID",
     type: "string",
     required: true,
-    helpText: "Get the Custom Value ID from the 'Get All Custom Values' action.",
+    helpText: "Get the User ID from the 'Get All Users' action.",
   },
-  { key: "locationId", label: "Location ID", type: "string", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/locations/${bundle.inputData.locationId}/custom-values/${bundle.inputData.customValueId}`,
+    url: `${ENV.API_URL}/users/${bundle.inputData.userId}`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getCustomValue = defineSearch({
-  key: "getCustomValue",
-  noun: "Custom Value",
+export const getUser = defineSearch({
+  key: "getUser",
+  noun: "User",
 
   display: {
-    label: "Get Custom Value",
-    description: "Get a Custom Value by ID",
+    label: "Get User",
+    description: "Get a User by ID",
   },
 
   operation: {
@@ -40,14 +39,6 @@ export const getCustomValue = defineSearch({
     // `inputFields` defines the fields a user could provide
     // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
-
-    // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
-    // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
-    // returned records, and have obvious placeholder values that we can show to any user.
-    sample: {
-      id: 1,
-      name: "Test",
-    },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see

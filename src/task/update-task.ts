@@ -5,16 +5,36 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "taskId", label: "Task ID", type: "string", required: true },
-  { key: "title", label: "Title", type: "string", required: true },
-  { key: "body", label: "Body", type: "string", required: false },
-  { key: "due_date", label: "Due Date", type: "string", required: false },
-  { key: "due_time", label: "Due Time", type: "string", required: false },
-  { key: "completed", label: "Completed", type: "boolean", required: false },
-  { key: "assigned_to", label: "Assigned To", type: "string", required: false },
+  {
+    key: "taskId",
+    label: "Task ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Task ID from the 'Get All Tasks' action.",
+  },
+  { key: "title", label: "Title", type: "string" },
+  { key: "body", label: "Body", type: "string" },
+  {
+    key: "due_date",
+    label: "Due Date",
+    type: "string",
+    placeholder: "2024-12-31",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "due_time",
+    label: "Due Time",
+    type: "string",
+    placeholder: "17:00:30",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+  },
+  { key: "time_zone", label: "Time Zone", type: "string", choices: Timezone },
+  { key: "completed", label: "Completed", type: "boolean" },
+  { key: "assigned_to", label: "Assigned To", type: "string" },
 ]);
 
 // create a particular contact by name

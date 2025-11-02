@@ -8,7 +8,13 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "locationId", label: "Location ID", type: "string", required: true },
-  { key: "tagId", label: "Tag ID", type: "string", required: true },
+  {
+    key: "tagId",
+    label: "Tag ID",
+    type: "string",
+    required: true,
+    helpText: "Get the tag ID from the 'Get All Location Tags' action.",
+  },
   { key: "name", label: "Tag Name", type: "string", required: false },
 ]);
 

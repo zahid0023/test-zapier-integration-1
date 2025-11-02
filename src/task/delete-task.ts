@@ -8,7 +8,13 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", required: true, type: "string", label: "Contact ID" },
-  { key: "taskId", required: true, type: "string", label: "Task ID" },
+  {
+    key: "taskId",
+    required: true,
+    type: "string",
+    label: "Task ID",
+    helpText: "Get the Task ID from the 'Get All Tasks' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {

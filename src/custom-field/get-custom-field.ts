@@ -7,7 +7,13 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "customFieldId", label: "Custom Field ID", type: "string", required: true },
+  {
+    key: "customFieldId",
+    label: "Custom Field ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Custom Field ID from the 'Get All Custom Fields' action.",
+  },
   { key: "locationId", label: "Location ID", type: "string", required: true },
 ]);
 
@@ -16,7 +22,7 @@ const perform = (async (z, bundle) => {
     url: `${ENV.API_URL}/custom-fields/${bundle.inputData.customFieldId}?location-id=${bundle.inputData.locationId}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.customField];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
 export const getCustomField = defineSearch({

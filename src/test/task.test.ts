@@ -64,6 +64,16 @@ describe("task", () => {
     expect(result).toBeDefined();
   });
 
+  it("complete: should complete task", async () => {
+    const bundle = {
+      authData,
+      inputData: { contactId, taskId: testedTask.id, completed: true },
+    };
+
+    const result = await appTester(App.creates["completeTask"].operation.perform as any, bundle);
+    expect(result).toBeDefined();
+  });
+
   it("delete: should remove task", async () => {
     const bundle = {
       authData,

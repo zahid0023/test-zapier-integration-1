@@ -2,6 +2,7 @@ import "dotenv/config";
 
 export const ENV = {
   API_URL: process.env.API_URL,
+  API_AUTH_URL: process.env.API_AUTH_URL,
   // Testing values
   AUTH_DATA_API_KEY: process.env.authData_apiKey ?? "default_api_key",
   LOCATION_ID: process.env.LOCATION_ID ?? "IxfSlEIQQeiOYQlVEApa",

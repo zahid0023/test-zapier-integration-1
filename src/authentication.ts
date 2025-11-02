@@ -7,7 +7,7 @@ import { ENV } from "./config/env.js";
 // response data for testing purposes. Your connection label can access any data
 // from the returned response using the `json.` prefix. eg: `{{json.username}}`.
 const test = (z: ZObject, bundle: Bundle) =>
-  z.request({ url: `${ENV.API_URL}/authorization/ping` });
+  z.request({ url: `${ENV.API_AUTH_URL}/authorization/ping` });
 
 export default {
   // "custom" is the catch-all auth type. The user supplies some info and Zapier can

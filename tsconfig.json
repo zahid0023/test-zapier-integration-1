@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "strict": true
+    "strict": true,
+    "maxNodeModuleJsDepth": 500
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./**/*.test.ts"]

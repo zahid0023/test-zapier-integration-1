@@ -23,7 +23,7 @@ export const getAppointments = defineSearch({
   noun: "Appointment",
 
   display: {
-    label: "Get Appointments",
+    label: "Get All Appointments",
     description: "Get all Appointments for a Contact",
   },
 

@@ -8,7 +8,12 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "userId", label: "User ID", type: "string" },
+  {
+    key: "user_id",
+    label: "User ID",
+    type: "string",
+    helpText: "Get the User ID from the 'Get All Users' action.",
+  },
   { key: "body", label: "Body", type: "string", required: true },
 ]);
 
