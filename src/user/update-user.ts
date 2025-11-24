@@ -5,6 +5,7 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { USER_SCOPE } from "../enums/user.enum.js";
 
 const inputFields = defineInputFields([
   {
@@ -14,12 +15,18 @@ const inputFields = defineInputFields([
     required: true,
     helpText: "Get the User ID from the 'Get All Users' action.",
   },
-  { key: "contact_id", label: "Contact ID", type: "string", required: true },
-  { key: "first_name", label: "First Name", type: "string", required: true },
-  { key: "last_name", label: "Last Name", type: "string", required: true },
-  { key: "email", label: "Email", type: "string", required: true },
+  { key: "contact_id", label: "Contact ID", type: "string" },
+  { key: "first_name", label: "First Name", type: "string" },
+  { key: "last_name", label: "Last Name", type: "string" },
+  { key: "email", label: "Email", type: "string" },
   { key: "email_change_otp", label: "Email Change OTP", type: "string" },
-  { key: "pass", label: "Password", type: "password", required: true },
+  {
+    key: "pass",
+    label: "Password",
+    type: "password",
+    helpText:
+      "Password must be more than 8 characters including uppercase, lowercase, numbers and special characters.",
+  },
   { key: "phone", label: "Phone", type: "string" },
   { key: "is_ejected_user", label: "Is Ejected User", type: "boolean" },
   {
@@ -27,46 +34,9 @@ const inputFields = defineInputFields([
     label: "Type",
     type: "string",
     choices: { lead: "Lead", customer: "Customer", vendor: "Vendor" },
-    required: true,
   },
   { key: "role", label: "Role", type: "string" },
   { key: "location_ids", label: "Location IDs", type: "string", list: true },
-  {
-    key: "permissions.campaignsEnabled",
-    label: "Campaigns Enabled",
-    type: "boolean",
-    default: "true",
-  },
-  {
-    key: "permissions.campaignsReadOnly",
-    label: "Campaigns Read Only",
-    type: "boolean",
-    default: "false",
-  },
-  {
-    key: "permissions.contactsEnabled",
-    label: "Contacts Enabled",
-    type: "boolean",
-    default: "true",
-  },
-  {
-    key: "permissions.workflowsEnabled",
-    label: "Workflows Enabled",
-    type: "boolean",
-    default: "true",
-  },
-  {
-    key: "permissions.workflowsReadOnly",
-    label: "Workflows Read Only",
-    type: "boolean",
-    default: "false",
-  },
-  {
-    key: "permissions.triggersEnabled",
-    label: "Triggers Enabled",
-    type: "boolean",
-    default: "true",
-  },
   {
     key: "permissions.campaigns_enabled",
     label: "Campaigns Enabled",
@@ -280,8 +250,14 @@ const inputFields = defineInputFields([
     type: "boolean",
     default: "true",
   },
-  { key: "scopes", label: "Scopes", type: "string", list: true },
-  { key: "scopes_assigned_to_only", label: "Scopes Assigned To Only", type: "string", list: true },
+  { key: "scopes", label: "Scopes", type: "string", list: true, choices: USER_SCOPE },
+  {
+    key: "scopes_assigned_to_only",
+    label: "Scopes Assigned To Only",
+    type: "string",
+    list: true,
+    choices: USER_SCOPE,
+  },
   { key: "profile_photo", label: "Profile Photo", type: "string" },
 ]);
 

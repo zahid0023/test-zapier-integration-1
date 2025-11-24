@@ -5,6 +5,7 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "appointmentId", label: "Appointment ID", type: "string", required: true },
@@ -15,7 +16,6 @@ const inputFields = defineInputFields([
     key: "override_location_config",
     label: "Override Location Config",
     type: "boolean",
-    required: false,
   },
   { key: "appointment_status", label: "Appointment Status", type: "string" },
   { key: "assigned_user_id", label: "Assigned User ID", type: "string" },
@@ -28,9 +28,36 @@ const inputFields = defineInputFields([
     type: "boolean",
   },
   { key: "rrule", label: "Rrule", type: "string" },
-  { key: "calendar_id", label: "Calendar ID", type: "string", required: true },
-  { key: "start_time", label: "Start Time", type: "string", required: true },
-  { key: "end_time", label: "End Time", type: "string" },
+  { key: "calendar_id", label: "Calendar ID", type: "string" },
+  {
+    key: "start_date",
+    label: "Start Date",
+    type: "string",
+    placeholder: "YYYY-MM-DD",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "start_time",
+    label: "Start Time",
+    type: "string",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+  },
+  {
+    key: "end_date",
+    label: "End Date",
+    type: "string",
+    placeholder: "YYYY-MM-DD",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "end_time",
+    label: "End Time",
+    type: "string",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+  },
+  { key: "time_zone", label: "Time Zone", type: "string", choices: Timezone },
 ]);
 
 const perform = (async (z, bundle) => {

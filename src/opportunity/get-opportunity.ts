@@ -8,30 +8,29 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   {
-    key: "contactId",
-    required: true,
+    key: "opportunityId",
+    label: "Opportunity ID",
     type: "string",
-    label: "Contact ID",
-    helpText: "Get the Contact ID from the 'Search Contact' action.",
+    required: true,
+    helpText: "Get the Opportunity ID from the 'Search Opportunity' action.",
   },
 ]);
 
-// find a particular contact by name
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}`,
+    url: `${ENV.API_URL}/opportunities/${bundle.inputData.opportunityId}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.contact];
+  return [response.data.opportunity];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getContact = defineSearch({
-  key: "getContact",
-  noun: "Contact",
+export const getOpportunity = defineSearch({
+  key: "getOpportunity",
+  noun: "Opportunity",
 
   display: {
-    label: "Get Contact",
-    description: "Get a Contact by ID",
+    label: "Get Opportunity",
+    description: "Get an Opportunity by ID",
   },
 
   operation: {
@@ -45,8 +44,9 @@ export const getContact = defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: "EQxIDXR6FovelHfwWmWB",
-    } satisfies InferInputData<typeof inputFields>,
+      id: 1,
+      name: "Test",
+    },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see
@@ -54,7 +54,7 @@ export const getContact = defineSearch({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      { key: "id", label: "Contact ID" },
+      // { key: "id", label: "Contact ID" },
     ],
   },
 });

@@ -9,9 +9,27 @@ import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "workflowId", label: "Workflow ID", type: "string", required: true },
-  { key: "dateTime", label: "Date Time", type: "string" },
-  { key: "time", label: "Time", type: "string" },
+  {
+    key: "workflowId",
+    label: "Workflow ID",
+    type: "string",
+    required: true,
+    dynamic: "workflows.id.name",
+  },
+  {
+    key: "date",
+    label: "Date Time",
+    type: "string",
+    placeholder: "2024-10-30",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "time",
+    label: "Time",
+    type: "string",
+    placeholder: "15:30:00",
+    helpText: "The value of this field should be in HH:mm:ss format",
+  },
   { key: "time_zone", label: "Timezone", type: "string", choices: Timezone },
 ]);
 
@@ -19,7 +37,7 @@ const perform = (async (z, bundle) => {
   const { contactId, workflowId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "DELETE",
-    url: `${ENV.API_URL}/contacts/${contactId}/workflow/${workflowId}`,
+    url: `${ENV.API_URL}/workflows/${contactId}/${workflowId}`,
     body,
   });
   // this should return a single object
@@ -28,11 +46,11 @@ const perform = (async (z, bundle) => {
 
 export const deleteContactWorkflow = defineCreate({
   key: "deleteContactWorkflow",
-  noun: "Workflow (Contact)",
+  noun: "Workflow",
 
   display: {
-    label: "Delete Contact from Workflow",
-    description: "Removes a contact from an existing workflow",
+    label: "Remove Contact from Workflow",
+    description: "Removes a contact from a workflow",
   },
 
   operation: {

@@ -5,6 +5,8 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
+import { COUNTRY_ENUM } from "../enums/country.enum.js";
 
 const inputFields = defineInputFields([
   { key: "name", label: "Name", type: "string", required: true },
@@ -13,37 +15,41 @@ const inputFields = defineInputFields([
   { key: "address", label: "Address", type: "string" },
   { key: "city", label: "City", type: "string" },
   { key: "state", label: "State", type: "string" },
-  { key: "country", label: "Country", type: "string" },
+  { key: "country", label: "Country", type: "string", choices: COUNTRY_ENUM },
   { key: "postal_code", label: "Postal Code", type: "string" },
   { key: "website", label: "Website", type: "string" },
-  { key: "timezone", label: "Timezone", type: "string" },
+  { key: "timezone", label: "Timezone", type: "string", choices: Timezone },
   // Prospect Info
-  { key: "prospect_info.firstName", label: "Prospect First Name", type: "string" },
-  { key: "prospect_info.lastName", label: "Prospect Last Name", type: "string" },
+  { key: "prospect_info.first_name", label: "Prospect First Name", type: "string" },
+  { key: "prospect_info.last_name", label: "Prospect Last Name", type: "string" },
   { key: "prospect_info.email", label: "Prospect Email", type: "string" },
   // Settings
-  { key: "settings.allowDuplicateContact", label: "Allow Duplicate Contact", type: "boolean" },
+  { key: "settings.allow_duplicate_contact", label: "Allow Duplicate Contact", type: "boolean" },
   {
-    key: "settings.allowDuplicateOpportunity",
+    key: "settings.allow_duplicate_opportunity",
     label: "Allow Duplicate Opportunity",
     type: "boolean",
   },
-  { key: "settings.allowFacebookNameMerge", label: "Allow Facebook Name Merge", type: "boolean" },
-  { key: "settings.disableContactTimezone", label: "Disable Contact Timezone", type: "boolean" },
-  { key: "social.facebookUrl", label: "Facebook URL", type: "string" },
-  { key: "social.googlePlus", label: "Google Plus", type: "string" },
-  { key: "social.linkedIn", label: "LinkedIn", type: "string" },
+  {
+    key: "settings.allow_facebook_name_merge",
+    label: "Allow Facebook Name Merge",
+    type: "boolean",
+  },
+  { key: "settings.disable_contact_timezone", label: "Disable Contact Timezone", type: "boolean" },
+  { key: "social.facebook_url", label: "Facebook URL", type: "string" },
+  { key: "social.google_plus", label: "Google Plus", type: "string" },
+  { key: "social.linked_in", label: "LinkedIn", type: "string" },
   { key: "social.foursquare", label: "Foursquare", type: "string" },
   { key: "social.twitter", label: "Twitter", type: "string" },
   { key: "social.yelp", label: "Yelp", type: "string" },
   { key: "social.instagram", label: "Instagram", type: "string" },
   { key: "social.youtube", label: "YouTube", type: "string" },
   { key: "social.pinterest", label: "Pinterest", type: "string" },
-  { key: "social.blogRss", label: "Blog RSS", type: "string" },
-  { key: "social.googlePlacesId", label: "Google Places ID", type: "string" },
+  { key: "social.blog_rss", label: "Blog RSS", type: "string" },
+  { key: "social.google_places_id", label: "Google Places ID", type: "string" },
   { key: "twilio.sid", label: "Twilio SID", type: "string" },
-  // { key: "twilio.token", label: "Twilio Auth Token", type: "string" }, // TODO: getting error for this field
-  // { key: "mailgun.key", label: "Mailgun API Key", type: "string" }, //TODO: getting error for this field
+  // { key: "twilio.auth_token", label: "Twilio Auth Token", type: "string" },
+  // { key: "mailgun.api_key", label: "Mailgun API Key", type: "string" },
   { key: "mailgun.domain", label: "Mailgun Domain", type: "string" },
   { key: "snapshot_id", label: "Snapshot ID", type: "string" },
 ]);

@@ -1,37 +1,39 @@
 import {
   defineInputFields,
-  defineSearch,
-  type SearchPerform,
+  defineCreate,
+  type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { OPPORTUNITY_STATUS } from "../enums/opportunity.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "opportunityId", label: "Opportunity ID", type: "string", required: true },
+  { key: "status", label: "Status", type: "string", required: true, choices: OPPORTUNITY_STATUS },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { opportunityId, ...body } = bundle.inputData;
   const response = await z.request({
-    url: `${ENV.API_URL}/locations/${bundle.inputData.locationId}`,
+    method: "PUT",
+    url: `${ENV.API_URL}/opportunities/${opportunityId}/status`,
+    body,
   });
-  // this should return an array of objects (but only the first will be used)
-  return [response.data];
-}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
+  // this should return a single object
+  return response.data;
+}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const searchLocation = defineSearch({
-  key: "location",
-  noun: "Location",
+export const updateOpportunityStatus = defineCreate({
+  key: "updateOpportunityStatus",
+  noun: "Opportunity",
 
   display: {
-    label: "Get Location",
-    description: "Get a Location by ID",
+    label: "Update Opportunity Status",
+    description: "Updates an existing opportunity status",
   },
 
   operation: {
     perform,
-
-    // `inputFields` defines the fields a user could provide
-    // Zapier will pass them in as `bundle.inputData` later. Searches need at least one `inputField`.
     inputFields,
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -48,7 +50,8 @@ export const searchLocation = defineSearch({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // { key: "id", label: "Contact ID" },
+      // {key: 'id', label: 'Person ID'},
+      // {key: 'name', label: 'Person Name'}
     ],
   },
 });

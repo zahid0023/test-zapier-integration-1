@@ -6,6 +6,7 @@ import { afters, befores } from "./middleware.js";
 
 import { createContact } from "./contact/create-contact.js";
 import { updateContact } from "./contact/update-contact.js";
+import { upsertContact } from "./contact/upsert-contact.js";
 import { deleteContact } from "./contact/delete-contact.js";
 import { getContact } from "./contact/get-contact.js";
 
@@ -53,7 +54,7 @@ import { createLocationTag, updateLocationTag, deleteLocationTag,  createContact
 import {
   createLocation,
   deleteLocation,
-  searchLocation,
+  getLocation,
   updateLocation,
 } from "./sub-account/index.js";
 import { addContactWorkflow, deleteContactWorkflow } from "./workflow/index.js";
@@ -84,6 +85,18 @@ import { deleteCalendar } from "./calendar/delete-calendar.js";
 import { getCalendars } from "./calendar/get-calendars.js";
 import { getCalendar } from "./calendar/get-calendar.js";
 import { getCalendarFreeSlots } from "./calendar/get-calendar-free-slots.js";
+import { searchContact } from "./search/search-contact.js";
+import { searchLocation } from "./search/search-location.js";
+import { searchOpportunity } from "./search/search-opportunities.js";
+import { getDuplicateContact } from "./search/get-duplicate-contact.js";
+import workflowTrigger from "./triggers/workflow-trigger.js";
+import { getOpportunity } from "./opportunity/get-opportunity.js";
+import { deleteOpportunity } from "./opportunity/delete-opportunity.js";
+import { upsertOpportunity } from "./opportunity/upsert-opportunity.js";
+import { updateOpportunityStatus } from "./opportunity/update-opportunity-status.js";
+import { searchUser } from "./search/search-user.js";
+import { getContactsByBusinessId } from "./contact/get-contacts.js";
+
 
 export default defineApp({
   // IMPORTANT: Note the use of `defineApp`
@@ -99,6 +112,7 @@ export default defineApp({
     // Contacts
     [createContact.key]: createContact,
     [updateContact.key]: updateContact,
+    [upsertContact.key]: upsertContact,
     [deleteContact.key]: deleteContact,
     // Tasks
     [createTask.key]: createTask,
@@ -163,6 +177,11 @@ export default defineApp({
     [calendarGroupValidateSlug.key]: calendarGroupValidateSlug,
     [calendarGroupDisable.key]: calendarGroupDisable,
 
+    // Opportunities
+    [deleteOpportunity.key]: deleteOpportunity,
+    [upsertOpportunity.key]: upsertOpportunity,
+    [updateOpportunityStatus.key]: updateOpportunityStatus,
+
     // Users
     [createUser.key]: createUser,
     [updateUser.key]: updateUser,
@@ -170,6 +189,7 @@ export default defineApp({
   },
 
   searches: {
+    [getContactsByBusinessId.key]: getContactsByBusinessId,
     [getContact.key]: getContact,
 
     [getTasks.key]: getTasks,
@@ -191,7 +211,7 @@ export default defineApp({
 
     [searchConversation.key]: searchConversation,
     [getAppointmentNotes.key]: getAppointmentNotes,
-    [searchLocation.key]: searchLocation,
+    [getLocation.key]: getLocation,
 
     [getCalendarEvents.key]: getCalendarEvents,
     [getBlockSlots.key]: getBlockSlots,
@@ -205,7 +225,18 @@ export default defineApp({
     [getCalendars.key]: getCalendars,
     [getCalendar.key]: getCalendar,
     [getCalendarFreeSlots.key]: getCalendarFreeSlots,
+
+    [getOpportunity.key]: getOpportunity,
+
+    // Search
+    [searchContact.key]: searchContact,
+    [getDuplicateContact.key]: getDuplicateContact,
+    [searchLocation.key]: searchLocation,
+    [searchOpportunity.key]: searchOpportunity,
+    [searchUser.key]: searchUser,
   },
 
-  triggers: {},
+  triggers: {
+    [workflowTrigger.key]: workflowTrigger,
+  },
 });

@@ -5,33 +5,37 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { SEARCH_ORDER_ENUM } from "../enums/search.enum.js";
 
 const inputFields = defineInputFields([
+  { key: "phone", label: "Phone", type: "string" },
+  { key: "email", label: "Email", type: "string" },
+  { key: "page_limit", label: "Limit", type: "integer", required: true, default: "20" },
   {
-    key: "contactId",
-    required: true,
-    type: "string",
-    label: "Contact ID",
-    helpText: "Get the Contact ID from the 'Search Contact' action.",
+    key: "page",
+    label: "Page",
+    type: "integer",
+    default: "1",
   },
 ]);
 
-// find a particular contact by name
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/${bundle.inputData.contactId}`,
+    method: "POST",
+    url: `${ENV.API_URL}/contacts/search`,
+    body: bundle.inputData,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.contact];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getContact = defineSearch({
-  key: "getContact",
+export const searchContact = defineSearch({
+  key: "searchContact",
   noun: "Contact",
 
   display: {
-    label: "Get Contact",
-    description: "Get a Contact by ID",
+    label: "Search Contact",
+    description: "Search contacts",
   },
 
   operation: {
@@ -45,8 +49,9 @@ export const getContact = defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      contactId: "EQxIDXR6FovelHfwWmWB",
-    } satisfies InferInputData<typeof inputFields>,
+      id: 1,
+      name: "Test",
+    },
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
     // For a more complete example of using dynamic fields see
@@ -54,7 +59,7 @@ export const getContact = defineSearch({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      { key: "id", label: "Contact ID" },
+      // { key: "id", label: "Contact ID" },
     ],
   },
 });

@@ -8,39 +8,44 @@ import { ENV } from "../config/env.js";
 import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "eventId", label: "Event ID", type: "string", required: true },
+  {
+    key: "eventId",
+    label: "Event ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Event ID from the 'Search Appointment Event' action.",
+  },
   { key: "title", label: "Title", type: "string" },
   { key: "calendar_id", label: "Calendar ID", type: "string", required: true },
   { key: "assigned_user_id", label: "Assigned User ID", type: "string" },
-  { key: "location_id", label: "Location ID", type: "string", required: true },
   { key: "time_zone", label: "Time Zone", type: "string", choices: Timezone },
   {
     key: "start_date",
     label: "Start Date",
     type: "string",
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
     key: "start_time",
     label: "Start Time",
     type: "string",
-    placeholder: "09:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
   {
     key: "end_date",
     label: "End Date",
     type: "string",
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
     key: "end_time",
     label: "End Time",
     type: "string",
-    placeholder: "17:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
 ]);
 

@@ -12,7 +12,7 @@ const inputFields = defineInputFields([
     label: "Appointment ID",
     type: "string",
     required: true,
-    helpText: "Get the Events ID from the 'Get All Appointments' action.",
+    helpText: "Get the Events ID from the 'Search Appointment Event' action.",
   },
 ]);
 

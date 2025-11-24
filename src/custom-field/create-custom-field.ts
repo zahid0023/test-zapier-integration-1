@@ -5,13 +5,29 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import {
+  CUSTOM_FIELD_ACCEPTED_FORMAT_ENUM,
+  CUSTOM_FIELD_DATA_TYPE_ENUM,
+  CUSTOM_FIELD_MODEL_ENUM,
+} from "../enums/custom-field.enum.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
   { key: "name", label: "Name", type: "string", required: true },
-  { key: "data_type", label: "Data Type", type: "string", required: true },
+  {
+    key: "data_type",
+    label: "Data Type",
+    type: "string",
+    required: true,
+    choices: CUSTOM_FIELD_DATA_TYPE_ENUM,
+  },
   { key: "placeholder", label: "Placeholder", type: "string" },
-  { key: "accepted_format", label: "Accepted Format", type: "string", list: true },
+  {
+    key: "accepted_format",
+    label: "Accepted Format",
+    type: "string",
+    list: true,
+    choices: CUSTOM_FIELD_ACCEPTED_FORMAT_ENUM,
+  },
   { key: "is_multiple_file", label: "Is Multiple File", type: "boolean" },
   { key: "max_number_of_files", label: "Max Number Of Files", type: "integer" },
   {
@@ -22,16 +38,15 @@ const inputFields = defineInputFields([
       { key: "prefill_value", label: "Prefill Value", type: "string" },
     ],
   },
-  { key: "position", label: "Position", type: "integer" },
-  { key: "model", label: "Model", type: "string" },
+  { key: "position", label: "Position", type: "integer", default: "0" },
+  { key: "model", label: "Model", type: "string", choices: CUSTOM_FIELD_MODEL_ENUM },
 ]);
 
 const perform = (async (z, bundle) => {
-  const { locationId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/custom-fields?location-id=${locationId}`,
-    body,
+    url: `${ENV.API_URL}/custom-fields`,
+    body: bundle.inputData,
   });
   // this should return a single object
   return response.data;
@@ -54,9 +69,8 @@ export const createCustomField = defineCreate({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      locationId: ENV.LOCATION_ID,
       name: "Custom Field 1",
-      data_type: "TEXT",
+      data_type: CUSTOM_FIELD_DATA_TYPE_ENUM.TEXT,
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

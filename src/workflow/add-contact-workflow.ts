@@ -9,9 +9,27 @@ import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "contactId", label: "Contact ID", type: "string", required: true },
-  { key: "workflowId", label: "Workflow ID", type: "string", required: true },
-  { key: "date", label: "Date Time", type: "string" },
-  { key: "time", label: "Time", type: "string" },
+  {
+    key: "workflowId",
+    label: "Workflow ID",
+    type: "string",
+    required: true,
+    dynamic: "workflows.id.name",
+  },
+  {
+    key: "date",
+    label: "Date Time",
+    type: "string",
+    placeholder: "2024-10-30",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "time",
+    label: "Time",
+    type: "string",
+    placeholder: "15:30",
+    helpText: "The value of this field should be in HH:mm format",
+  },
   { key: "time_zone", label: "Timezone", type: "string", choices: Timezone },
 ]);
 
@@ -19,7 +37,7 @@ const perform = (async (z, bundle) => {
   const { contactId, workflowId, ...body } = bundle.inputData;
   const response = await z.request({
     method: "POST",
-    url: `${ENV.API_URL}/contacts/${contactId}/workflow/${workflowId}`,
+    url: `${ENV.API_URL}/workflows/${contactId}/${workflowId}`,
     body,
   });
   // this should return a single object
@@ -28,11 +46,11 @@ const perform = (async (z, bundle) => {
 
 export const addContactWorkflow = defineCreate({
   key: "addContactWorkflow",
-  noun: "Workflow (Contact)",
+  noun: "Workflow",
 
   display: {
     label: "Add Contact to Workflow",
-    description: "Adds a contact to an existing workflow",
+    description: "Add a contact to a workflow",
   },
 
   operation: {

@@ -26,7 +26,6 @@ const inputFields = defineInputFields([
     type: "string",
     helpText: "Get the User ID from the 'Get All Users' action.",
   },
-  { key: "locationId", label: "Location ID", type: "string", required: true },
   {
     key: "timezone",
     label: "Timezone",
@@ -39,7 +38,7 @@ const inputFields = defineInputFields([
     label: "Start Date",
     type: "string",
     required: true,
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
@@ -47,15 +46,15 @@ const inputFields = defineInputFields([
     label: "Start Time",
     type: "string",
     required: true,
-    placeholder: "09:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
   {
     key: "endDate",
     label: "End Date",
     type: "string",
     required: true,
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
@@ -63,8 +62,8 @@ const inputFields = defineInputFields([
     label: "End Time",
     type: "string",
     required: true,
-    placeholder: "17:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
 ]);
 
@@ -73,7 +72,6 @@ const perform = (async (z, bundle) => {
     calendarId = "",
     groupId = "",
     userId = "",
-    locationId = "",
     timezone = "",
     startDate = "",
     startTime = "",
@@ -83,12 +81,12 @@ const perform = (async (z, bundle) => {
   const response = await z.request({
     url: `${
       ENV.API_URL
-    }/calendars/events/block-slots?location-id=${locationId}&timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}${
+    }/calendars/events/blocked-slots?timezone=${timezone}&start-date=${startDate}&start-time=${startTime}&end-date=${endDate}&end-time=${endTime}${
       calendarId ? `&calendar-id=${calendarId}` : ""
     }${groupId ? `&group-id=${groupId}` : ""}${userId ? `&user-id=${userId}` : ""}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.events];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
 export const getBlockSlots = defineSearch({
@@ -111,7 +109,6 @@ export const getBlockSlots = defineSearch({
     // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
     // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
-      locationId: ENV.LOCATION_ID,
       timezone: "America/New_York",
       startDate: "2024-10-01",
       startTime: "08:00",

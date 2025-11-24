@@ -7,16 +7,15 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
   { key: "email", label: "Email", type: "string" },
-  { key: "number", label: "Number", type: "string" },
+  { key: "number", label: "Phone", type: "string" },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/contacts/search/duplicate?location-id=${
-      bundle.inputData.locationId
-    }&email=${bundle.inputData.email || ""}&number=${bundle.inputData.number || ""}`,
+    url: `${ENV.API_URL}/contacts/search/duplicate?&email=${bundle.inputData.email || ""}&number=${
+      bundle.inputData.number || ""
+    }`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];

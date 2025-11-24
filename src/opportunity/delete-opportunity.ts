@@ -8,39 +8,34 @@ import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
   {
-    key: "eventId",
-    label: "Event ID",
-    type: "string",
+    key: "opportunityId",
     required: true,
-    helpText: "Get the Event ID from the 'Search Appointment Event' action.",
+    type: "string",
+    label: "Opportunity ID",
+    helpText: "Get the Opportunity ID from the 'Search Opportunity' action.",
   },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
     method: "DELETE",
-    url: `${ENV.API_URL}/calendars/events/events/${bundle.inputData.eventId}`,
+    url: `${ENV.API_URL}/opportunities/${bundle.inputData.opportunityId}`,
   });
-  // this should return a single object
   return response.data;
 }) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const deleteCalendarEvent = defineCreate({
-  key: "deleteCalendarEvent",
-  noun: "Calendar Event",
+export const deleteOpportunity = defineCreate({
+  key: "deleteOpportunity",
+  noun: "Opportunity",
 
   display: {
-    label: "Delete Calendar Event",
-    description: "Deletes an existing calendar event",
+    label: "Delete Opportunity",
+    description: "Delete an Opportunity by ID",
   },
 
   operation: {
     perform,
     inputFields,
-
-    // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
-    // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
-    // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
       id: 1,
       name: "Test",
@@ -52,8 +47,8 @@ export const deleteCalendarEvent = defineCreate({
     // Alternatively, a static field definition can be provided, to specify labels for the fields
     outputFields: [
       // these are placeholders to match the example `perform` above
-      // {key: 'id', label: 'Person ID'},
-      // {key: 'name', label: 'Person Name'}
+      // { key: "id", label: "Contact ID" },
+      // { key: "name", label: "Contact Name" },
     ],
   },
 });

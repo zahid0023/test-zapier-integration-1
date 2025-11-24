@@ -5,6 +5,7 @@ import {
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
+import { Timezone } from "../enums/timezone.enum.js";
 
 const inputFields = defineInputFields([
   { key: "title", label: "Title", type: "string" },
@@ -28,10 +29,38 @@ const inputFields = defineInputFields([
   },
   { key: "rrule", label: "Rrule", type: "string" },
   { key: "calendar_id", label: "Calendar ID", type: "string", required: true },
-  { key: "location_id", label: "Location ID", type: "string", required: true },
   { key: "contact_id", label: "Contact ID", type: "string", required: true },
-  { key: "start_time", label: "Start Time", type: "string", required: true },
-  { key: "end_time", label: "End Time", type: "string" },
+  {
+    key: "start_date",
+    label: "Start Date",
+    type: "string",
+    required: true,
+    placeholder: "YYYY-MM-DD",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "start_time",
+    label: "Start Time",
+    type: "string",
+    required: true,
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+  },
+  {
+    key: "end_date",
+    label: "End Date",
+    type: "string",
+    placeholder: "YYYY-MM-DD",
+    helpText: "The value of this field should be in YYYY-MM-DD format",
+  },
+  {
+    key: "end_time",
+    label: "End Time",
+    type: "string",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
+  },
+  { key: "time_zone", label: "Time Zone", type: "string", required: true, choices: Timezone },
 ]);
 
 const perform = (async (z, bundle) => {
@@ -63,9 +92,10 @@ export const createAppointmentEvent = defineCreate({
     sample: {
       title: "New Appointment 1",
       calendar_id: ENV.TEST_CALENDAR_ID,
-      location_id: ENV.LOCATION_ID,
       contact_id: ENV.TEST_CONTACT_ID,
-      start_time: "2025-11-30T10:00:00Z",
+      start_date: "2024-11-01",
+      start_time: "10:00",
+      time_zone: "America/New_York",
     } satisfies InferInputData<typeof inputFields>,
 
     // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels

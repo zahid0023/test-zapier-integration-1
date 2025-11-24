@@ -39,7 +39,7 @@ const inputFields = defineInputFields([
     label: "Start Date",
     type: "string",
     required: true,
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
@@ -47,15 +47,15 @@ const inputFields = defineInputFields([
     label: "Start Time",
     type: "string",
     required: true,
-    placeholder: "09:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
   {
     key: "endDate",
     label: "End Date",
     type: "string",
     required: true,
-    placeholder: "2024-12-31",
+    placeholder: "YYYY-MM-DD",
     helpText: "The value of this field should be in YYYY-MM-DD format",
   },
   {
@@ -63,8 +63,8 @@ const inputFields = defineInputFields([
     label: "End Time",
     type: "string",
     required: true,
-    placeholder: "17:00:00",
-    helpText: "The value of this field should be in HH:MM:SS format",
+    placeholder: "HH:mm or HH:mm:ss",
+    helpText: "The value of this field should be in HH:mm or HH:mm:ss format",
   },
 ]);
 
@@ -88,7 +88,7 @@ const perform = (async (z, bundle) => {
     }${groupId ? `&group-id=${groupId}` : ""}${userId ? `&user-id=${userId}` : ""}`,
   });
   // this should return an array of objects (but only the first will be used)
-  return [response.data.events];
+  return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
 export const getCalendarEvents = defineSearch({
@@ -96,8 +96,8 @@ export const getCalendarEvents = defineSearch({
   noun: "Calendar Event",
 
   display: {
-    label: "Get All Calendar Events",
-    description: "Get all calendar events",
+    label: "Search Appointment Event",
+    description: "Get Appointment Events by Calendar",
   },
 
   operation: {
