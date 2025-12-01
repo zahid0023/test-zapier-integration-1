@@ -1,0 +1,6 @@
+export const BLOG_STATUS_ENUM = {
+  DRAFT: "DRAFT",
+  PUBLISHED: "PUBLISHED",
+  SCHEDULED: "SCHEDULED",
+  ARCHIVED: "ARCHIVED",
+} as const;
