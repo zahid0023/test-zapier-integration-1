@@ -1,30 +1,36 @@
 import {
   defineInputFields,
-  defineSearch,
-  type SearchPerform,
+  defineCreate,
+  type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  {
+    key: "funnelRedirectId",
+    label: "Funnel Redirect ID",
+    required: true,
+    type: "string",
+    helpText: "Get the Funnel Redirect ID from the 'Get All Funnel Redirects' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    method: "DELETE",
+    url: `${ENV.API_URL}/funnels/redirects/${bundle.inputData.funnelRedirectId}`,
   });
-  // this should return an array of objects (but only the first will be used)
-  return [response.data];
-}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
+  return response.data;
+}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const deleteFunnelRedirect = defineCreate({
+  key: "deleteFunnelRedirect",
+  noun: "Funnel Redirect",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Delete Funnel Redirect",
+    description: "Delete a funnel redirect by ID",
   },
 
   operation: {
@@ -49,6 +55,7 @@ export const getBusinesses = defineSearch({
     outputFields: [
       // these are placeholders to match the example `perform` above
       // { key: "id", label: "Contact ID" },
+      // { key: "name", label: "Contact Name" },
     ],
   },
 });

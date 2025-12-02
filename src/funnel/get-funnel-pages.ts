@@ -7,24 +7,31 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "funnelId", label: "Funnel ID", type: "string", required: true },
+  { key: "name", label: "Name", type: "string" },
+  { key: "limit", label: "Limit", type: "integer", required: true },
+  { key: "offset", label: "Offset", type: "integer", required: true },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { funnelId, name, limit, offset } = bundle.inputData;
+
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    url: `${ENV.API_URL}/funnels/redirects/pages?funnel-id=${funnelId}${
+      name ? `&name=${name}` : ""
+    }&limit=${limit}&offset=${offset}`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const getFunnelPages = defineSearch({
+  key: "getFunnelPages",
+  noun: "Funnel Page",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Get All Funnel Pages",
+    description: "Get all funnel pages",
   },
 
   operation: {

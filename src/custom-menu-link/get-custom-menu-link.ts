@@ -7,24 +7,30 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  {
+    key: "customMenuLinkId",
+    label: "Custom Menu Link ID",
+    type: "string",
+    required: true,
+    helpText: "Get the Custom Menu Link ID from the 'Get All Custom Menu Links' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    url: `${ENV.API_URL}/custom-menu-links/${bundle.inputData.customMenuLinkId}`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const getCustomMenuLink = defineSearch({
+  key: "getCustomMenuLink",
+  noun: "Custom Menu Link",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Get Custom Menu Link",
+    description: "Get a specific Custom Menu Link by ID",
   },
 
   operation: {

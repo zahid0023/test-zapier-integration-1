@@ -1,30 +1,36 @@
 import {
   defineInputFields,
-  defineSearch,
-  type SearchPerform,
+  defineCreate,
+  type CreatePerform,
   type InferInputData,
 } from "zapier-platform-core";
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  {
+    key: "customMenuLinkId",
+    label: "Custom Menu Link ID",
+    required: true,
+    type: "string",
+    helpText: "Get the Custom Menu Link ID from the 'Get All Custom Menu Links' action.",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    method: "DELETE",
+    url: `${ENV.API_URL}/custom-menu-links/${bundle.inputData.customMenuLinkId}`,
   });
-  // this should return an array of objects (but only the first will be used)
-  return [response.data];
-}) satisfies SearchPerform<InferInputData<typeof inputFields>>;
+  return response.data;
+}) satisfies CreatePerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const deleteCustomMenuLink = defineCreate({
+  key: "deleteCustomMenuLink",
+  noun: "Custom Menu Link",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Delete Custom Menu Link",
+    description: "Delete a custom menu link by ID",
   },
 
   operation: {
@@ -49,6 +55,7 @@ export const getBusinesses = defineSearch({
     outputFields: [
       // these are placeholders to match the example `perform` above
       // { key: "id", label: "Contact ID" },
+      // { key: "name", label: "Contact Name" },
     ],
   },
 });

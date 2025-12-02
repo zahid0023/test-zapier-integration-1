@@ -7,24 +7,46 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  {
+    key: "query",
+    label: "Query",
+    type: "string",
+    helpText: "Search query to filter custom menus by name, supports partial || full names",
+  },
+  { key: "limit", label: "Limit", type: "integer", default: "20" },
+  { key: "skip", label: "Skip", type: "integer", default: "0" },
+  {
+    key: "showOnCompany",
+    label: "Show On Company",
+    type: "boolean",
+    helpText:
+      "Filter to show only agency-level menu links. When omitted, fetches both agency and sub-account menu links. Ignored if locationId is provided",
+  },
 ]);
 
 const perform = (async (z, bundle) => {
+  const params = new URLSearchParams();
+  for (const key in bundle.inputData) {
+    if (bundle.inputData[key] !== undefined) {
+      params.append(key, String(bundle.inputData[key]));
+    }
+  }
+
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    url: `${ENV.API_URL}/custom-menu-links`,
+    params: Object.fromEntries(params),
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const getCustomMenuLinks = defineSearch({
+  key: "getCustomMenuLinks",
+  noun: "Custom Menu Link",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Get All Custom Menu Links",
+    description: "Get all custom menu links",
   },
 
   operation: {

@@ -7,24 +7,34 @@ import {
 import { ENV } from "../config/env.js";
 
 const inputFields = defineInputFields([
-  { key: "locationId", label: "Location ID", type: "string", required: true },
+  { key: "type", label: "Type", type: "string" },
+  { key: "category", label: "Category", type: "string" },
+  { key: "parentId", label: "Parent ID", type: "string" },
+  { key: "name", label: "Name", type: "string" },
+  { key: "limit", label: "Limit", type: "integer" },
+  { key: "offset", label: "Offset", type: "integer" },
 ]);
 
 const perform = (async (z, bundle) => {
+  const { type, category, parentId, name, limit, offset } = bundle.inputData;
   const response = await z.request({
-    url: `${ENV.API_URL}/calendars?location-id=${bundle.inputData.locationId}`,
+    url: `${ENV.API_URL}/funnels/redirects/list?${type ? `type=${type}&` : ""}${
+      category ? `category=${category}&` : ""
+    }${parentId ? `parent-id=${parentId}&` : ""}${name ? `name=${name}&` : ""}${
+      limit ? `limit=${limit}&` : ""
+    }${offset ? `offset=${offset}` : ""}`,
   });
   // this should return an array of objects (but only the first will be used)
   return [response.data];
 }) satisfies SearchPerform<InferInputData<typeof inputFields>>;
 
-export const getBusinesses = defineSearch({
-  key: "getBusinesses",
-  noun: "Business",
+export const getFunnelRedirects = defineSearch({
+  key: "getFunnelRedirects",
+  noun: "Funnel Redirect",
 
   display: {
-    label: "Get All Businesses",
-    description: "Get all Businesses",
+    label: "Get All Funnel Redirects",
+    description: "Get all funnel redirects",
   },
 
   operation: {
